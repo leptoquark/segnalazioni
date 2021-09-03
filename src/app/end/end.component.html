@@ -1,0 +1,13 @@
+  <h1>Riepilogo della segnalazione inviata</h1>
+  <div>
+    <p class="bd-lead">Nella seguente sezione è possibile vedere i dati inviati e procedere con il download per poi firmare digitalmente il file per allegarlo alla sottomissione definitiva.</p>
+  </div>
+  <div id="content">
+    <formio id="formio-full" src="http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local/segnalazione/submission/{{submission}}" [renderOptions]='options' [refresh]="refreshForm" [form]='form'></formio>
+  </div>
+  <div> 
+    <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Genera documento PDF</button>
+    <button type="button" (click)="edit()" class="btn btn-primary btn-lg">Modifica Segnalazione</button>
+  </div>
+
+

@@ -1,0 +1,9 @@
+ <div>
+    <formio src="http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local/segnalazione"
+      [renderOptions]="renderOptions"
+      [options]="options"
+      (submit)="onSubmit($event)"
+      (change)="onChange($event)"
+      [form]="form"
+      [refresh]="refreshForm"></formio>
+ </div>
