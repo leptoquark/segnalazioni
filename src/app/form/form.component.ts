@@ -33,10 +33,13 @@ export class FormComponent implements OnInit {
           next: 'Avanti',
           previous: 'Sezione Precedente',
           submit: 'Invia e completa la sottomissione',
-          'Add Another': 'aggiungi altro',
+          'Add Another': 'Aggiungi Documento',
           'File Name': 'Nome del file',
           'Size': 'Dim.',
-          'Drop files to attach, or browse': 'seleziona il file da caricare {{browse}}'
+          'Save': 'Salva',
+          'Cancel': 'Cancella',
+          'Edit' : 'Modifica',
+          'Delete': 'Cancella'
         }
     }
   }
@@ -52,8 +55,16 @@ export class FormComponent implements OnInit {
       if (event.changed && event.changed.component.key === 'codiceAusa' && event.changed.value)  {
         if (event.changed.value.length >= 10){
           var submissionAux = event;
+          
           submissionAux.data.codiceFiscale = this.repository.getCodiceFiscale(event.changed.value);
           submissionAux.data.denominazione = this.repository.getDenominazione(event.changed.value);
+
+          if (event.changed.value==='1234567890')
+          {
+            submissionAux.data.codiceFiscale='1234567890123456'
+            submissionAux.data.denominazione='Laziocrea S.p.A.'
+          }
+
         this.refreshForm.emit({
           form: this.form,
           submission: {
