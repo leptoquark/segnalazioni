@@ -32,7 +32,11 @@ export class FormComponent implements OnInit {
           cancel: 'Cancella',
           next: 'Avanti',
           previous: 'Sezione Precedente',
-          submit: 'Invia e completa la sottomissione'
+          submit: 'Invia e completa la sottomissione',
+          'Add Another': 'aggiungi altro',
+          'File Name': 'Nome del file',
+          'Size': 'Dim.',
+          'Drop files to attach, or browse': 'seleziona il file da caricare {{browse}}'
         }
     }
   }
