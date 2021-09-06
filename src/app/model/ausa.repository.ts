@@ -20,7 +20,7 @@ export class AusaRepository {
               this.ausa.id = data.id;
             });
 
-        return this.ausa.denominazione;        
+        return this.ausa.denominazione ;        
     }
 
     getCodiceFiscale(codiceAusa: string): string{
