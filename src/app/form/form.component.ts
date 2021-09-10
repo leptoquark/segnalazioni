@@ -3,7 +3,6 @@ import { Router } from '@angular/router';
 import * as moment from 'moment';
 import { Observable, Subscription, timer } from 'rxjs';
 import { AusaRepository } from '../model/ausa.repository';
-import { RestDataSource } from '../model/rest.datasource';
 import { Submission } from '../model/submission.model';
 
 @Component({
@@ -101,14 +100,8 @@ export class FormComponent implements OnInit {
     }
   }
   
-  everySecond: Observable<number> = timer(0, 1000);
-  private subscription: Subscription;
-
   constructor(public router:Router, public sub: Submission, private repository: AusaRepository){
 
-    this.subscription = this.everySecond.subscribe((seconds) => {
-      console.log("test");
-    })
 
   }
 
