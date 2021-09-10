@@ -1,7 +1,5 @@
 import { Component, EventEmitter, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import * as moment from 'moment';
-import { Observable, Subscription, timer } from 'rxjs';
 import { AusaRepository } from '../model/ausa.repository';
 import { Submission } from '../model/submission.model';
 
@@ -52,7 +50,7 @@ export class FormComponent implements OnInit {
    
   }
 
-  render(event: any) {
+/*  render(event: any) {
     let submissionDraft = "";
     let dataAux = localStorage.getItem("draft");
     if (dataAux != null)
@@ -65,7 +63,7 @@ export class FormComponent implements OnInit {
       }
     });
    
-  }
+  }*/
 
 
   customEvent(event: any)
