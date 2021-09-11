@@ -50,7 +50,7 @@ export class FormComponent implements OnInit {
    
   }
 
-/*  render(event: any) {
+  render(event: any) {
     let submissionDraft = "";
     let dataAux = localStorage.getItem("draft");
     if (dataAux != null)
@@ -63,7 +63,7 @@ export class FormComponent implements OnInit {
       }
     });
    
-  }*/
+  }
 
 
   customEvent(event: any)
