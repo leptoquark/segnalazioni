@@ -39,8 +39,8 @@ export class FormComponent implements OnInit {
           'Cancel': 'Cancella',
           'Edit' : 'Modifica',
           'Delete': 'Cancella',
-          'Yes:': 'Si',
-          'No': 'No'
+          'Yes:': 'Sì',
+          'No': 'No',
         }
     }
   }

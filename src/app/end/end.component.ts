@@ -48,17 +48,26 @@ export class EndComponent  implements OnInit {
   public downloadAsPDF()  
   {
     var data = document.getElementById('content');  
-    html2canvas(data as HTMLElement).then(canvas => {  
-        var imgWidth = 208;   
-        var pageHeight = 295;    
-        var imgHeight = canvas.height * imgWidth / canvas.width;  
-        var heightLeft = imgHeight;  
+    html2canvas(data as HTMLElement).then(canvas => {
+        var imgWidth = 208; 
+        var pageHeight = 295;  
+        var imgHeight = canvas.height * imgWidth / canvas.width;
+        var heightLeft = imgHeight;
 
+        var doc = new jsPDF('p', 'mm');
+        var position = 0;
         const contentDataURL = canvas.toDataURL('image/png')  
-        let pdf = new jspdf('p', 'mm', 'a4'); 
-        var position = 0;  
-        pdf.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight)  
-        pdf.save('sottomissione.pdf');
+
+        doc.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+        heightLeft -= pageHeight;
+
+        while (heightLeft >= 0) {
+          position = heightLeft - imgHeight;
+          doc.addPage();
+          doc.addImage(contentDataURL, 'PNG', 0, position, imgWidth, imgHeight);
+          heightLeft -= pageHeight;
+        }
+        doc.save( 'submission.pdf');
     });  
   }
 
