@@ -5,6 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "ng build",
+    "pushandbuild": "ng build && git add * && git commit -m 'aggiornamnento' && git push -u origin main",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "json": "json-server data.js -p 3500 -m authMiddleware.js"
