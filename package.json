@@ -1,14 +1,15 @@
 {
   "name": "segnalazioni",
-  "version": "0.0.0",
+  "version": "0.0.3",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
+    "prebuild": "npm --no-git-tag-version version patch",
     "build": "ng build",
     "pushandbuild": "ng build && git add * && git commit -m 'aggiornamnento' && git push -u origin main",
-    "backup-standard" : "java -jar tools\\formioExport.jar claudio.biancalana@gmail.com 102659 segnalazione http://localhost:3001 claudio.biancalana@gmail.com 102659 segnalazione-cmd http://localhost:3001",
-    "backup" : "java -jar tools\\formioExport.jar",
-    "dove" : "pwd",
+    "backup-standard": "java -jar tools\\formioExport.jar claudio.biancalana@gmail.com 102659 segnalazione http://localhost:3001 claudio.biancalana@gmail.com 102659 segnalazione-cmd http://localhost:3001",
+    "backup": "java -jar tools\\formioExport.jar",
+    "dove": "pwd",
     "watch": "ng build --watch --configuration development",
     "test": "ng test",
     "json": "json-server data.js -p 3500 -m authMiddleware.js"
