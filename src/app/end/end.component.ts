@@ -14,7 +14,7 @@ export class EndComponent  implements OnInit {
 
   ngOnInit(): void {
     
-    var formio = new Formio(AppConfig.appUrl+'/segnalazione/submission/'+this.sub.getId());
+    var formio = new Formio(AppConfig.appUrl+'/segnalazione-dev/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
@@ -73,7 +73,7 @@ export class EndComponent  implements OnInit {
 
   public edit()
   {
-    var formio = new Formio(AppConfig.appUrl+'/segnalazione/submission/'+this.sub.getId());
+    var formio = new Formio(AppConfig.appUrl+'/segnalazione-dev/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
