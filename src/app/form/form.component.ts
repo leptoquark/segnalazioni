@@ -43,7 +43,7 @@ export class FormComponent implements OnInit {
           'No': 'No',
           'Day': 'giorno',
           'Month': 'mese',
-          'Year': 'anno',
+          'Year': 'anno'
         }
     }
   }
