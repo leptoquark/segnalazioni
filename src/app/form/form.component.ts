@@ -41,6 +41,9 @@ export class FormComponent implements OnInit {
           'Delete': 'Cancella',
           'Yes:': 'Sì',
           'No': 'No',
+          'Day': 'giorno',
+          'Month': 'mese',
+          'Year': 'anno',
         }
     }
   }
