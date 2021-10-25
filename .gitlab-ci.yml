@@ -1,0 +1,41 @@
+image: docker:latest
+
+stages:
+  - build_angular
+  - build
+
+services:
+  - docker:dind
+
+before_script:
+  - docker login -u "$CI_REGISTRY_USER" -p "$CI_REGISTRY_PASSWORD" $CI_REGISTRY
+
+build_angular:
+  image: node:12.15.0
+  stage: build_angular
+  before_script:
+  - npm install
+  - npm install angular
+  - npm ci
+  script:
+  - npm run build
+  artifacts:
+   expire_in: 1 day
+   paths:
+   - dist/
+
+build-master:
+  stage: build
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE" .
+    - docker push "$CI_REGISTRY_IMAGE"
+  only:
+    - master
+
+build:
+  stage: build
+  script:
+    - docker build --pull -t "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG" .
+    - docker push "$CI_REGISTRY_IMAGE:$CI_COMMIT_REF_SLUG"
+  except:
+    - master
