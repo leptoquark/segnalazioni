@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
 import { AusaRepository } from '../model/ausa.repository';
 import { Submission } from '../model/submission.model';
@@ -7,6 +7,7 @@ import { Submission } from '../model/submission.model';
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
+
 
 export class FormComponent implements OnInit {
 
@@ -43,7 +44,19 @@ export class FormComponent implements OnInit {
           'No': 'No',
           'Day': 'giorno',
           'Month': 'mese',
-          'Year': 'anno'
+          'Year': 'anno',
+          "january": "Gennaio",
+          "february": "Febbraio",
+          "march": "Marzo",
+          "april": "Aprile",
+          "may": "Maggio",
+          "june": "Giugno",
+          "july": "Luglio",
+          "august": "Agosto",
+          "september": "Settembre",
+          "october": "Ottobre",
+          "november": "Novembre",
+          "december": "Dicembre"
         }
     }
   }
@@ -52,10 +65,12 @@ export class FormComponent implements OnInit {
   form: any;
   
   ngOnInit(): void {
-   
+    window.scrollTo(0, 0);    
   }
 
+
   render(event: any) {
+
     let submissionDraft = "";
     let dataAux = localStorage.getItem("draft");
     if (dataAux != null)
@@ -103,7 +118,7 @@ export class FormComponent implements OnInit {
     }
   }
   
-  constructor(public router:Router, public sub: Submission, private repository: AusaRepository){
+  constructor(public router:Router, public sub: Submission, private repository: AusaRepository, private renderer: Renderer2){
 
 
   }
