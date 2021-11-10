@@ -104,10 +104,9 @@ export class FormComponent implements OnInit {
 
           if (event.changed.value==='1234567890')
           {
+            console.log(submissionAux)
             submissionAux.data.page3FieldsetDenominazione='CIG_DENOMINAZIONE'
-            submissionAux.data.page3FieldsetDenominazione.disabled=true
             submissionAux.data.page3Fieldset4PanelColumnsCodiceFiscale='1234567890123456'
-            submissionAux.data.page3Fieldset4PanelColumnsCodiceFiscale.disabled=true
 
           }
 
