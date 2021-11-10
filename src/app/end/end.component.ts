@@ -19,7 +19,8 @@ export class EndComponent  implements OnInit {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
         readOnly: true,
-        renderMode: 'html',
+        //renderMode: 'html',
+        renderMode: 'flat',
       }).then(function(instance) {
         formio.loadSubmission().then(function(submission: any) {
           instance.submission = submission;
