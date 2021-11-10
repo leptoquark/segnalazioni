@@ -95,17 +95,21 @@ export class FormComponent implements OnInit {
   }
   onChange(event: any) { 
 
-       if (event.changed && event.changed.component.key === 'codiceAusa' && event.changed.value)  {
+       if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
         if (event.changed.value.length >= 10){
           var submissionAux = event;
           
-          submissionAux.data.codiceFiscale = this.repository.getCodiceFiscale(event.changed.value);
-          submissionAux.data.denominazione = this.repository.getDenominazione(event.changed.value);
+        /*  submissionAux.data.codiceFiscale = this.repository.getCodiceFiscale(event.changed.value);
+          submissionAux.data.denominazione = this.repository.getDenominazione(event.changed.value);*/
 
           if (event.changed.value==='1234567890')
           {
-            submissionAux.data.codiceFiscale='1234567890123456'
-            submissionAux.data.denominazione='Laziocrea S.p.A.'
+            submissionAux.data.page3FieldsetDenominazione='CIG_DENOMINAZIONE';
+            submissionAux.data.page3FieldsetDenominazione.disabled=true;
+            
+            submissionAux.data.page3Fieldset4PanelColumnsCodiceFiscale='1234567890123456';
+            submissionAux.data.page3Fieldset4PanelColumnsCodiceFiscale.disabled=true;
+
           }
 
         this.refreshForm.emit({
