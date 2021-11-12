@@ -1,7 +1,10 @@
 import { Injectable } from "@angular/core";
-import { HttpClient } from "@angular/common/http"
-import { Observable } from "rxjs";
-import { Ausa } from "./ausa.model";
+import { HttpClient, HttpHeaders } from "@angular/common/http"
+
+import { Observable, of } from 'rxjs';
+import { catchError,  tap } from 'rxjs/operators';
+
+import { Cig } from "./cig.model";
 
 const PROTOCOL = "http";
 const PORT = "3500";
@@ -11,11 +14,30 @@ const AUSA = "StazioniAppaltanti";
 export class RestDataSource {
     baseUrl: string;
 
+    httpOptions = {
+        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+      };
+    
+
     constructor(private http: HttpClient) {
-        this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/${AUSA}/`;
+       // this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/${AUSA}/`;
+       this.baseUrl = `http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local/ws/appalti/`;
+       //this.baseUrl = `http://localhost:8080/ws/appalti/`;
+       //this.baseUrl = `http://localhost:8080/appalti-test?cig=`;
     }
 
-    getInfoFromAusa(codiceAusa: string): Observable<Ausa> {
-        return this.http.get<Ausa>(this.baseUrl+codiceAusa);
+    private handleError<T>(operation = 'operation', result?: T) {
+        return (error: any): Observable<T> => {
+          console.error(error); // log to console instead
+          console.log(`${operation} failed: ${error.message}`);
+          return of(result as T);
+        };
+      }
+
+    getInfoFromCig(cig: string): Observable<Cig> {
+        return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(
+            tap(_ => console.log(`fetched cig id=${cig}`)),
+            catchError(this.handleError<Cig>(`cig id=${cig}`))
+          );
     }
 }

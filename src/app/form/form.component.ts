@@ -1,7 +1,8 @@
 import { Component, EventEmitter, Input, OnInit, Renderer2 } from '@angular/core';
 import { Router } from '@angular/router';
-import { AusaRepository } from '../model/ausa.repository';
+import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
+import { Cig } from '../model/cig.model'
 
 @Component({
   templateUrl: './form.component.html',
@@ -65,9 +66,10 @@ export class FormComponent implements OnInit {
   form: any;
   
   ngOnInit(): void {
-    window.scrollTo(0, 0);    
+    this.refreshForm.emit({
+      form: this.form
+    });
   }
-
 
   render(event: any) {
 
@@ -85,6 +87,7 @@ export class FormComponent implements OnInit {
    
   }
 
+  
 
   customEvent(event: any)
   {
@@ -92,37 +95,45 @@ export class FormComponent implements OnInit {
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(event.data));
     }
-  }
-  onChange(event: any) { 
 
-       if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
-        if (event.changed.value.length >= 10){
-          var submissionAux = event;
-          
-        /*  submissionAux.data.codiceFiscale = this.repository.getCodiceFiscale(event.changed.value);
-          submissionAux.data.denominazione = this.repository.getDenominazione(event.changed.value);*/
+    if (event.type === 'valida_cig')
+    {
+      let response = this.repository.getResponse(event.data.cig).response;
 
-          if (event.changed.value==='1234567890')
-          {
-            console.log(submissionAux)
-            submissionAux.data.page3FieldsetDenominazione='CIG_DENOMINAZIONE'
-            submissionAux.data.page3Fieldset4PanelColumnsCodiceFiscale='1234567890123456'
-
-          }
-
-        this.refreshForm.emit({
-          form: this.form,
-          submission: {
-            data: submissionAux.data
-          }
-        });
+      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
+        event.data.cig_trovato=1;
+      else if (response.codice_risposta==='OK')
+      {
+        console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
+        event.data.page3Fieldset4PanelColumnsCodiceFiscale_=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
+        console.log("Deominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
+        event.data.page3FieldsetDenominazione_=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
+        console.log("Comune: "+response.stazione_appaltante.ISTAT_COMUNE);
+        event.data.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
+        console.log("Nome RUP: "+response.incaricati[0].NOME);
+        event.data.page3PanelColumnsNome=response.incaricati[0].NOME;
+        console.log("Cognome RUP: "+response.incaricati[0].COGNOME);
+        event.data.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
+        console.log("Oggetto gara: "+response.bando.OGGETTO_GARA);
+        event.data.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
+        console.log("importo gara:"+response.bando.IMPORTO_COMPLESSIVO_GARA);
+        event.data.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
       }
     }
   }
+
+  onChange(event: any) { 
+       if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
+        if (event.changed.value.length >= 10){
+          event.data.ricerca_cig=1;
+          this.repository.getResponse(event.data.cig).response;
+          event.data.cig=event.data.cig.substring(0, 9);
+        }
+      }
+
+  }
   
-  constructor(public router:Router, public sub: Submission, private repository: AusaRepository, private renderer: Renderer2){
-
-
+  constructor(public router:Router, public sub: Submission, private repository: CigRepository) {
   }
 
   get submission() {
