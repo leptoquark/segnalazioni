@@ -105,9 +105,9 @@ export class FormComponent implements OnInit {
       else if (response.codice_risposta==='OK')
       {
         console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
-        event.data.page3Fieldset4PanelColumnsCodiceFiscale_=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
+        event.data.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         console.log("Deominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
-        event.data.page3FieldsetDenominazione_=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
+        event.data.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
         console.log("Comune: "+response.stazione_appaltante.ISTAT_COMUNE);
         event.data.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
         console.log("Nome RUP: "+response.incaricati[0].NOME);
@@ -120,6 +120,11 @@ export class FormComponent implements OnInit {
         event.data.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
       }
     }
+
+    this.refreshForm.emit({
+      form: this.form
+    });
+
   }
 
   onChange(event: any) { 
