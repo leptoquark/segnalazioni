@@ -104,7 +104,7 @@ export class FormComponent implements OnInit {
 
       if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
         submissionAux.cig_trovato=1;
-      else if (response.codice_risposta==='OK')
+      else
       {
         submissionAux.cig_trovato=0;
         console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
