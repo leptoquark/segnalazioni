@@ -138,7 +138,7 @@ export class FormComponent implements OnInit {
         if (event.changed.value.length >= 10){
           event.data.ricerca_cig=1;
           this.repository.getResponse(event.data.cig).response;
-          event.data.cig=event.data.cig.substring(0, 9);
+          event.data.cig=event.data.cig.substring(0, 10);
         }
 
         this.refreshForm.emit({
