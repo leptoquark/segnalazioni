@@ -91,6 +91,8 @@ export class FormComponent implements OnInit {
 
   customEvent(event: any)
   {
+    let submissionAux = event.data;
+
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(event.data));
@@ -101,28 +103,32 @@ export class FormComponent implements OnInit {
       let response = this.repository.getResponse(event.data.cig).response;
 
       if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
-        event.data.cig_trovato=1;
+        submissionAux.cig_trovato=1;
       else if (response.codice_risposta==='OK')
       {
+        submissionAux.cig_trovato=0;
         console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
-        event.data.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
+        submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         console.log("Deominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
-        event.data.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
+        submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
         console.log("Comune: "+response.stazione_appaltante.ISTAT_COMUNE);
-        event.data.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
+        submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
         console.log("Nome RUP: "+response.incaricati[0].NOME);
-        event.data.page3PanelColumnsNome=response.incaricati[0].NOME;
+        submissionAux.page3PanelColumnsNome=response.incaricati[0].NOME;
         console.log("Cognome RUP: "+response.incaricati[0].COGNOME);
-        event.data.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
+        submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
         console.log("Oggetto gara: "+response.bando.OGGETTO_GARA);
-        event.data.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
+        submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
         console.log("importo gara:"+response.bando.IMPORTO_COMPLESSIVO_GARA);
-        event.data.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
+        submissionAux.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
       }
     }
 
     this.refreshForm.emit({
-      form: this.form
+      form: this.form,
+      submission: {
+        data: submissionAux
+      }
     });
 
   }
@@ -134,6 +140,13 @@ export class FormComponent implements OnInit {
           this.repository.getResponse(event.data.cig).response;
           event.data.cig=event.data.cig.substring(0, 9);
         }
+
+        this.refreshForm.emit({
+          form: this.form,
+          submission: {
+            data: event.data
+          }
+        });
       }
 
   }
