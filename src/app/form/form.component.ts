@@ -103,6 +103,11 @@ export class FormComponent implements OnInit {
       submissionAux.cig="";
     }
 
+    if (event.type === 'nextPage')
+    {
+      window.scrollTo(0,0)
+    }
+
     if (event.type === 'valida_cig')
     {
       let response = this.repository.getResponse(event.data.cig).response;
@@ -114,7 +119,7 @@ export class FormComponent implements OnInit {
         submissionAux.cig_trovato=0;
         console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
-        console.log("Deominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
+        console.log("Denominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
         console.log("Comune: "+response.stazione_appaltante.ISTAT_COMUNE);
         submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
