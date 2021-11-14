@@ -1,8 +1,9 @@
-import { Component, EventEmitter, Input, OnInit, Renderer2 } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
-import { Cig } from '../model/cig.model'
+import { FormioComponent } from 'angular-formio';
+
 
 @Component({
   templateUrl: './form.component.html',
@@ -11,6 +12,8 @@ import { Cig } from '../model/cig.model'
 
 
 export class FormComponent implements OnInit {
+  @ViewChild('formEl')
+  formEl!: FormioComponent;
 
   options: Object = {
     submitMessage: "",
@@ -66,9 +69,11 @@ export class FormComponent implements OnInit {
   form: any;
   
   ngOnInit(): void {
-    this.refreshForm.emit({
-      form: this.form
-    });
+
+  }
+
+  onTop(): void {
+    window.scrollTo(0,0)    
   }
 
   render(event: any) {
@@ -103,10 +108,6 @@ export class FormComponent implements OnInit {
       submissionAux.cig="";
     }
 
-    if (event.type === 'nextPage')
-    {
-      window.scrollTo(0,0)
-    }
 
     if (event.type === 'valida_cig')
     {
@@ -144,6 +145,8 @@ export class FormComponent implements OnInit {
   }
 
   onChange(event: any) { 
+
+    
        if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
         if (event.changed.value.length >= 10){
           event.data.ricerca_cig=1;
