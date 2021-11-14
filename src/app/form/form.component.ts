@@ -98,6 +98,11 @@ export class FormComponent implements OnInit {
       localStorage.setItem("draft",JSON.stringify(event.data));
     }
 
+    if (event.type === 'cancella_cig'){
+      submissionAux.cig_trovato=1;
+      submissionAux.cig="";
+    }
+
     if (event.type === 'valida_cig')
     {
       let response = this.repository.getResponse(event.data.cig).response;
