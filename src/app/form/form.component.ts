@@ -109,10 +109,9 @@ export class FormComponent implements OnInit {
       submissionAux.cig="";
     }
 
-
     if (event.type === 'valida_cig')
     {
-      let response = this.repository.getResponseWait(event.data.cig).response;
+      let response = this.repository.getResponse(event.data.cig).response;
 
       if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
         submissionAux.cig_trovato=1;
