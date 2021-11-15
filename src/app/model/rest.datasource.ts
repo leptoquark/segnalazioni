@@ -15,7 +15,10 @@ export class RestDataSource {
     baseUrl: string;
 
     httpOptions = {
-        headers: new HttpHeaders({ 'Content-Type': 'application/json' })
+        headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                   'Access-Control-Allow-Origin':'*',
+                                   'Access-Control-Allow-Methods':'GET',
+                                   'Access-Control-Allow-Headers':'Content-Type'})
       };
     
 
@@ -34,7 +37,11 @@ export class RestDataSource {
         };
       }
 
+
     getInfoFromCig(cig: string): Observable<Cig> {
+      const headers = new Headers();
+
+      
         return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(
             tap(_ => console.log(`fetched cig id=${cig}`)),
             catchError(this.handleError<Cig>(`cig id=${cig}`))

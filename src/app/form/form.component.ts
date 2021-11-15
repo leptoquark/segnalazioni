@@ -15,6 +15,9 @@ export class FormComponent implements OnInit {
   @ViewChild('formEl')
   formEl!: FormioComponent;
 
+  refreshForm = new EventEmitter();
+  form: any;
+
   options: Object = {
     submitMessage: "",
     disableAlerts: true,
@@ -65,8 +68,6 @@ export class FormComponent implements OnInit {
     }
   }
   
-  refreshForm = new EventEmitter();
-  form: any;
   
   ngOnInit(): void {
 

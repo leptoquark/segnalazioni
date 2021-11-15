@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormioAppConfig, FormioModule } from '@formio/angular';
-import { Form } from 'formiojs';
 import { AppConfig } from 'src/config';
 
 import { AppRoutingModule } from './app-routing.module';
