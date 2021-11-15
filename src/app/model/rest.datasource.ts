@@ -44,7 +44,7 @@ export class RestDataSource {
       }
 
     getInfoFromCig(cig: string): Observable<Cig> {
-          return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(delay(5000)).pipe(
+          return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(
             tap(_ => console.log(`fetched cig id=${cig}`)),
             catchError(this.handleError<Cig>(`cig id=${cig}`))
           );
