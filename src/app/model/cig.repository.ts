@@ -12,7 +12,7 @@ export class CigRepository {
     }
 
     getResponseWait(codice_cig: string) :any {
-        return this.datasource.getInfoFromCigWait(codice_cig);
+        return this.datasource.getInfoFromCig(codice_cig);
     }
 
 
