@@ -2,7 +2,7 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 
 import { Observable, of } from 'rxjs';
-import { catchError,  tap } from 'rxjs/operators';
+import { catchError,  tap, delay } from 'rxjs/operators';
 
 import { Cig } from "./cig.model";
 
@@ -13,7 +13,6 @@ const AUSA = "StazioniAppaltanti";
 @Injectable()
 export class RestDataSource {
     baseUrl: string;
-
     httpOptions = {
         headers: new HttpHeaders({ 'Content-Type': 'application/json',
                                    'Access-Control-Allow-Origin':'*',
@@ -31,18 +30,14 @@ export class RestDataSource {
 
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
-          console.error(error); // log to console instead
+          console.error(error);
           console.log(`${operation} failed: ${error.message}`);
           return of(result as T);
         };
       }
 
-
     getInfoFromCig(cig: string): Observable<Cig> {
-      const headers = new Headers();
-
-      
-        return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(
+          return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(delay(5000)).pipe(
             tap(_ => console.log(`fetched cig id=${cig}`)),
             catchError(this.handleError<Cig>(`cig id=${cig}`))
           );
