@@ -28,6 +28,13 @@ export class RestDataSource {
        //this.baseUrl = `http://localhost:8080/appalti-test?cig=`;
     }
 
+    
+    async getInfoFromCigWait(cig: string): Promise<Cig>
+    {
+       let data = await this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).toPromise();
+       return data;
+    }
+
     private handleError<T>(operation = 'operation', result?: T) {
         return (error: any): Observable<T> => {
           console.error(error);
