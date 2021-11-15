@@ -105,7 +105,7 @@ export class FormComponent implements OnInit {
     }
 
     if (event.type === 'cancella_cig'){
-      submissionAux.cig_trovato=1;
+      submissionAux.cig_trovato=0;
       submissionAux.cig="";
     }
 
