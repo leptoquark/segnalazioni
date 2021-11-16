@@ -111,8 +111,7 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
-      console.log(this.formEl);
-      console.log("JSON: "+JSON.stringify(this.formEl));
+      console.log("FORM-EL:"+this.formEl);
 
       submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWaitCig(event.data.cig));
