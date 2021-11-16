@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
+import { EnvConfig } from 'src/config';
 
 @Component({
   templateUrl: './form.component.html',
@@ -24,6 +25,8 @@ export class FormComponent implements OnInit {
     saveDraft: true ,
   };
 
+  src: string = EnvConfig.appUrl+"/"+EnvConfig.formId;
+  
   renderOptions: Object = {
     buttonSettings: {
       showCancel: false
@@ -67,9 +70,12 @@ export class FormComponent implements OnInit {
     }
   }
   
-  
   ngOnInit(): void {
 
+  }
+
+  async formLoad(event: any): Promise<void> {
+    await this.repository.authenticate();
   }
 
   onTop(): void {
@@ -91,9 +97,6 @@ export class FormComponent implements OnInit {
     });
    
   }
-
-  
-
   async customEvent(event: any)
   {
     let submissionAux = event.data;
@@ -111,12 +114,9 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
-      console.log("FORM-EL:"+this.formEl);
-
       submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWaitCig(event.data.cig));
       
-
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
       else
@@ -176,5 +176,4 @@ export class FormComponent implements OnInit {
     this.sub.setId(submission._id);
     this.router.navigate(['/end']);
   }
-
 }

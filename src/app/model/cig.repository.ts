@@ -1,5 +1,7 @@
 import { Injectable } from "@angular/core";
+import { EnvConfig } from "src/config";
 import { Cig } from "./cig.model";
+import { JWT } from "./jwt.model";
 import { PersonaGiuridica } from "./persona-giuridica.model";
 import { RestDataSource } from "./rest.datasource";
 
@@ -19,5 +21,9 @@ export class CigRepository {
 
     getResponseWaitCig(codice_cig: string) :Promise<Cig> {
         return this.datasource.getInfoFromCigWait(codice_cig);
+    }
+
+    authenticate():Promise<JWT> {
+        return this.datasource.autheticate(EnvConfig.jwt_user, EnvConfig.jwt_password);
     }
 }

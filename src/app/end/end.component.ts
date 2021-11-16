@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Formio } from '@formio/angular';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
-import { AppConfig } from 'src/config';
+import { EnvConfig} from 'src/config';
 import { Submission } from '../model/submission.model';
 
 @Component({
@@ -13,8 +13,7 @@ import { Submission } from '../model/submission.model';
 export class EndComponent  implements OnInit {
 
   ngOnInit(): void {
-    
-    var formio = new Formio(AppConfig.appUrl+'/segnalazione-dev/submission/'+this.sub.getId());
+    var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
@@ -30,7 +29,8 @@ export class EndComponent  implements OnInit {
     });
   }
 
-  constructor(private route:Router, private sub: Submission){
+  constructor(private route:Router, private sub: Submission)
+  {
 
   }
 
@@ -75,7 +75,7 @@ export class EndComponent  implements OnInit {
 
   public edit()
   {
-    var formio = new Formio(AppConfig.appUrl+'/segnalazione-dev/submission/'+this.sub.getId());
+    var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {

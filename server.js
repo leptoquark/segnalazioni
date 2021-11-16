@@ -12,8 +12,8 @@ const enableHttps = false;
 const ssloptions = {}
 
 if (enableHttps) {
-    ssloptions.cert =  fs.readFileSync("./ssl/sportsstore.crt");
-    ssloptions.key = fs.readFileSync("./ssl/sportsstore.pem");
+    ssloptions.cert =  fs.readFileSync("./ssl/anticorruzione.crt");
+    ssloptions.key = fs.readFileSync("./ssl/anticorruzione.pem");
 }
 
 const app = express();
@@ -40,7 +40,10 @@ app.use(history());
 app.use("/", express.static("./dist/segnalazioni"));
 
 app.listen(8080, 
-    () => console.log("HTTP Server running on port 8080"));
+    () => console.log(
+        "Progetto: Segnalazioni Vigilanza\n"+
+        "Autore: <c.biancalana@anticorruzione.it>\n\n"+
+        "Il server delle Segnalazioni risponde sulla porta 8080"));
 
 if (enableHttps) {
     https.createServer(ssloptions, app).listen(8443,

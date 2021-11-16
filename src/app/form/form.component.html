@@ -1,5 +1,5 @@
  <div>
-    <formio #formEl  src="http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local/segnalazione-dev"
+    <formio #formEl [src]="src"
       [renderOptions]="renderOptions"
       [options]="options"
       (submit)="onSubmit($event)"
@@ -7,14 +7,6 @@
       (customEvent)="customEvent($event)"
       [form]="form"
       [refresh]="refreshForm"
+      (formLoad)="formLoad($event)"
       (nextPage)="onTop()" (prevPage)="onTop()"></formio>
-      <!--formio src="http://localhost:3001/segnalazione-dev"
-      [renderOptions]="renderOptions"
-      [options]="options"
-      (submit)="onSubmit($event)"
-      (change)="onChange($event)"
-      (customEvent)="customEvent($event)"
-      [form]="form"
-      [refresh]="refreshForm"
-      (nextPage)="onTop()" (prevPage)="onTop()"></formio-->
  </div>
