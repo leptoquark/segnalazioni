@@ -115,12 +115,15 @@ export class FormComponent implements OnInit {
       console.log("JSON: "+JSON.stringify(this.formEl));
 
       submissionAux.cancella_cig=0;
-      let response =  (await this.repository.getResponseWait(event.data.cig));
+      let response =  (await this.repository.getResponseWaitCig(event.data.cig));
+      
 
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
       else
       {
+        console.log("Ricerca per: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
+        let responsePG = (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE));
         submissionAux.cig_trovato=0;
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
@@ -129,6 +132,7 @@ export class FormComponent implements OnInit {
         submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
         submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
         submissionAux.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
+        console.log("TIPO SOGGETTO: "+responsePG.tipoSoggetto.tipo_soggetto);
       }
     }
 
