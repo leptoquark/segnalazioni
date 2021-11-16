@@ -21,7 +21,7 @@ export class RestDataSource {
     constructor(private http: HttpClient) {
        // this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/${AUSA}/`;
        this.baseUrl_appalti = `http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local/ws/appalti/`;
-       this.baseUrl_personaGiuridica = `http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local/ws/personagiuridica/cf`;
+       this.baseUrl_personaGiuridica = `http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local/ws/personagiuridica/cf/`;
        //this.baseUrl = `http://localhost:8080/ws/appalti/`;
        //this.baseUrl = `http://localhost:8080/appalti-test?cig=`;
     }
