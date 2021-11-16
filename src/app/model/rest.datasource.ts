@@ -6,10 +6,6 @@ import { catchError,  tap, delay } from 'rxjs/operators';
 
 import { Cig } from "./cig.model";
 
-const PROTOCOL = "http";
-const PORT = "3500";
-const AUSA = "StazioniAppaltanti";
-
 @Injectable()
 export class RestDataSource {
     baseUrl: string;
@@ -20,7 +16,6 @@ export class RestDataSource {
                                    'Access-Control-Allow-Headers':'Content-Type'})
       };
     
-
     constructor(private http: HttpClient) {
        // this.baseUrl = `${PROTOCOL}://${location.hostname}:${PORT}/${AUSA}/`;
        this.baseUrl = `http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local/ws/appalti/`;
@@ -28,10 +23,8 @@ export class RestDataSource {
        //this.baseUrl = `http://localhost:8080/appalti-test?cig=`;
     }
 
-    
     async getInfoFromCigWait(cig: string): Promise<Cig>
     {
-       console.log("attesa asincrona per cig: "+cig);
        let data = await this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe().toPromise();
        return data;
     }
