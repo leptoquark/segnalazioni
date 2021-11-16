@@ -32,10 +32,7 @@ export class RestDataSource {
     async getInfoFromCigWait(cig: string): Promise<Cig>
     {
        console.log("attesa asincrona per cig: "+cig);
-       let data = await this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).toPromise();
-       console.log("INFO:"+JSON.stringify(data));
-       console.log("CR:"+data.codice_risposta);
-       console.log("AMM:"+data.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
+       let data = await this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe().toPromise();
        return data;
     }
 }

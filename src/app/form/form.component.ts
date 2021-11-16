@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
+import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
 
 
 @Component({
@@ -111,17 +112,16 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
-      console.log("clicco");
       let response =  (await this.repository.getResponseWait(event.data.cig));
 
-     if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
+     if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
       else
       {
         submissionAux.cig_trovato=0;
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
-        submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
+        submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')';
         submissionAux.page3PanelColumnsNome=response.incaricati[0].NOME;
         submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
         submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
