@@ -111,6 +111,9 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
+      console.log(this.formEl);
+      console.log("JSON: "+JSON.stringify(this.formEl));
+
       submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWait(event.data.cig));
 
@@ -140,17 +143,17 @@ export class FormComponent implements OnInit {
 
   onChange(event: any) { 
        if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
-        if (event.changed.value.length >= 10){
-          event.data.ricerca_cig=1;
-          event.data.cig=event.data.cig.substring(0, 10);
-        }
+          if (event.changed.value.length > 10){
+            event.data.ricerca_cig=1;
+            event.data.cig=event.data.cig.substring(0, 10);
 
-        this.refreshForm.emit({
-          form: this.form,
-          submission: {
-            data: event.data
-          }
-        });
+          this.refreshForm.emit({
+            form: this.form,
+            submission: {
+              data: event.data
+            }
+          });
+        }
       }
 
   }
