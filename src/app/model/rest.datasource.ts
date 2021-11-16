@@ -31,22 +31,11 @@ export class RestDataSource {
     
     async getInfoFromCigWait(cig: string): Promise<Cig>
     {
+       console.log("attesa asincrona per cig: "+cig);
        let data = await this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).toPromise();
+       console.log("INFO:"+JSON.stringify(data));
+       console.log("CR:"+data.codice_risposta);
+       console.log("AMM:"+data.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
        return data;
-    }
-
-    private handleError<T>(operation = 'operation', result?: T) {
-        return (error: any): Observable<T> => {
-          console.error(error);
-          console.log(`${operation} failed: ${error.message}`);
-          return of(result as T);
-        };
-      }
-
-    getInfoFromCig(cig: string): Observable<Cig> {
-          return this.http.get<Cig>(this.baseUrl+cig, this.httpOptions).pipe(
-            tap(_ => console.log(`fetched cig id=${cig}`)),
-            catchError(this.handleError<Cig>(`cig id=${cig}`))
-          );
     }
 }

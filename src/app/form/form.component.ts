@@ -95,7 +95,7 @@ export class FormComponent implements OnInit {
 
   
 
-  customEvent(event: any)
+  async customEvent(event: any)
   {
     let submissionAux = event.data;
 
@@ -111,26 +111,20 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
-      let response = this.repository.getResponse(event.data.cig).response;
+      console.log("clicco");
+      let response =  (await this.repository.getResponseWait(event.data.cig));
 
-      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
+     if (response.codice_risposta==='NOKCN' || response.codice_risposta==='')
         submissionAux.cig_trovato=1;
       else
       {
         submissionAux.cig_trovato=0;
-        console.log("CF: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
-        console.log("Denominazione: "+response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE);
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
-        console.log("Comune: "+response.stazione_appaltante.ISTAT_COMUNE);
         submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.ISTAT_COMUNE;
-        console.log("Nome RUP: "+response.incaricati[0].NOME);
         submissionAux.page3PanelColumnsNome=response.incaricati[0].NOME;
-        console.log("Cognome RUP: "+response.incaricati[0].COGNOME);
         submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
-        console.log("Oggetto gara: "+response.bando.OGGETTO_GARA);
         submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
-        console.log("importo gara:"+response.bando.IMPORTO_COMPLESSIVO_GARA);
         submissionAux.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
       }
     }
@@ -145,12 +139,9 @@ export class FormComponent implements OnInit {
   }
 
   onChange(event: any) { 
-
-    
        if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
         if (event.changed.value.length >= 10){
           event.data.ricerca_cig=1;
-          this.repository.getResponse(event.data.cig).response;
           event.data.cig=event.data.cig.substring(0, 10);
         }
 
