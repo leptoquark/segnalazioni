@@ -3,8 +3,6 @@ import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
-import { nullSafeIsEquivalent } from '@angular/compiler/src/output/output_ast';
-
 
 @Component({
   templateUrl: './form.component.html',
@@ -106,12 +104,14 @@ export class FormComponent implements OnInit {
     }
 
     if (event.type === 'cancella_cig'){
+      submissionAux.cancella_cig=1;
       submissionAux.cig_trovato=1;
       submissionAux.cig="";
     }
 
     if (event.type === 'valida_cig')
     {
+      submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWait(event.data.cig));
 
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
