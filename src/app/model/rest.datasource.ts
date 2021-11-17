@@ -50,7 +50,7 @@ export class RestDataSource {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
                                     'Access-Control-Allow-Origin':'*',
-                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Methods':'POST',
                                     'Access-Control-Allow-Headers':'Content-Type'})
        };
 
