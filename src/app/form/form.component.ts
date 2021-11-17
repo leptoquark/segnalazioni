@@ -18,6 +18,8 @@ export class FormComponent implements OnInit {
   refreshForm = new EventEmitter();
   form: any;
 
+  private jwtToken:string = "";
+
   options: Object = {
     submitMessage: "",
     disableAlerts: true,
@@ -75,7 +77,8 @@ export class FormComponent implements OnInit {
   }
 
   async formLoad(event: any): Promise<void> {
-    await this.repository.authenticate();
+    this.jwtToken = (await this.repository.authenticate()).token;
+    console.log("token: "+this.jwtToken)
   }
 
   onTop(): void {
@@ -115,14 +118,15 @@ export class FormComponent implements OnInit {
     if (event.type === 'valida_cig')
     {
       submissionAux.cancella_cig=0;
-      let response =  (await this.repository.getResponseWaitCig(event.data.cig));
+      let response =  (await this.repository.getResponseWaitCig(event.data.cig,this.jwtToken));
       
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
       else
       {
         console.log("Ricerca per: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
-        let responsePG = (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE));
+        let responsePG =
+          (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE,this.jwtToken));
         submissionAux.cig_trovato=0;
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;

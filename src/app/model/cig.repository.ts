@@ -15,12 +15,12 @@ export class CigRepository {
 
     }
 
-    getResponseWaitPG(cf: string):Promise<PersonaGiuridica> {
-        return this.datasource.getInfoFromSAWait(cf);
+    getResponseWaitPG(cf: string, jwt: string):Promise<PersonaGiuridica> {
+        return this.datasource.getInfoFromSAWait(cf, jwt);
     }
 
-    getResponseWaitCig(codice_cig: string) :Promise<Cig> {
-        return this.datasource.getInfoFromCigWait(codice_cig);
+    getResponseWaitCig(codice_cig: string, jwt: string) :Promise<Cig> {
+        return this.datasource.getInfoFromCigWait(codice_cig, jwt);
     }
 
     authenticate():Promise<JWT> {
