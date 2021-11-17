@@ -15,7 +15,7 @@ export class RestDataSource {
     constructor(private http: HttpClient) {
        this.baseUrl_appalti = EnvConfig.backendUrl+`/ws/appalti/`;
        this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/`;
-       this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate/`;
+       this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
     async getInfoFromCigWait(cig: string, jwt: string): Promise<Cig>
@@ -25,7 +25,7 @@ export class RestDataSource {
                                     'Access-Control-Allow-Origin':'*',
                                     'Access-Control-Allow-Methods':'GET',
                                     'Access-Control-Allow-Headers':'Content-Type',
-                                    'Authotization':'Bearer'+jwt})
+                                    'Authorization':'Bearer '+jwt})
        };
        let data = await this.http.get<Cig>(this.baseUrl_appalti+cig,httpOptions).toPromise();
        return data;
@@ -38,7 +38,7 @@ export class RestDataSource {
                                     'Access-Control-Allow-Origin':'*',
                                     'Access-Control-Allow-Methods':'GET',
                                     'Access-Control-Allow-Headers':'Content-Type',
-                                    'Authotization':'Bearer'+jwt})
+                                    'Authorization':'Bearer '+jwt})
        };
 
        let data = await this.http.get<PersonaGiuridica>(this.baseUrl_personaGiuridica+sa,httpOptions).toPromise();
@@ -51,7 +51,8 @@ export class RestDataSource {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
                                     'Access-Control-Allow-Origin':'*',
                                     'Access-Control-Allow-Methods':'POST',
-                                    'Access-Control-Allow-Headers':'Content-Type'})
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                 })
        };
 
        let auth = JSON.parse("{\"username\":\""+username+"\", \"password\":\""+password+"\"}");
