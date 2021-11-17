@@ -22,9 +22,9 @@ export class RestDataSource {
     {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
-                                  //  'Access-Control-Allow-Origin':'*',
-                                  //  'Access-Control-Allow-Methods':'GET',
-                                  //  'Access-Control-Allow-Headers':'Content-Type',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
                                     'Authotization':'Bearer'+jwt})
        };
        let data = await this.http.get<Cig>(this.baseUrl_appalti+cig,httpOptions).toPromise();
@@ -35,9 +35,9 @@ export class RestDataSource {
     {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
-                                 //   'Access-Control-Allow-Origin':'*',
-                                 //   'Access-Control-Allow-Methods':'GET',
-                                //    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
                                     'Authotization':'Bearer'+jwt})
        };
 
@@ -49,8 +49,8 @@ export class RestDataSource {
     {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
-                                //    'Access-Control-Allow-Origin':'*',
-                                //    'Access-Control-Allow-Methods':'POST',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'POST',
                                     'Access-Control-Allow-Headers':'Content-Type'})
        };
 
