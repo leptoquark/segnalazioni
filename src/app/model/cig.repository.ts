@@ -1,5 +1,5 @@
 import { Injectable } from "@angular/core";
-import { EnvConfig } from "src/config";
+import { EnvConfig } from "src/environments/environment";
 import { Cig } from "./cig.model";
 import { JWT } from "./jwt.model";
 import { PersonaGiuridica } from "./persona-giuridica.model";

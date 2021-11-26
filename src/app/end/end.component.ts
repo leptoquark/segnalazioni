@@ -3,7 +3,7 @@ import { Router } from '@angular/router';
 import { Formio } from '@formio/angular';
 import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
-import { EnvConfig} from 'src/config';
+import { EnvConfig } from 'src/environments/environment';
 import { Submission } from '../model/submission.model';
 
 @Component({

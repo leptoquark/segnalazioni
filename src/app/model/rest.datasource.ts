@@ -2,8 +2,8 @@ import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { Cig } from "./cig.model";
 import { PersonaGiuridica } from "./persona-giuridica.model";
-import { EnvConfig } from "src/config";
 import { JWT } from "./jwt.model";
+import { EnvConfig } from "src/environments/environment";
 
 @Injectable()
 export class RestDataSource {
@@ -30,7 +30,7 @@ export class RestDataSource {
        let data = await this.http.get<Cig>(this.baseUrl_appalti+cig,httpOptions).toPromise();
        return data;
     }
-
+    
     async getInfoFromSAWait(sa: string, jwt: string): Promise<PersonaGiuridica>
     {
       let httpOptions = {

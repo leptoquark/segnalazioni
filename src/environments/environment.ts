@@ -1,16 +1,31 @@
-// This file can be replaced during build by using the `fileReplacements` array.
-// `ng build` replaces `environment.ts` with `environment.prod.ts`.
-// The list of file replacements can be found in `angular.json`.
+import { FormioAppConfig } from "@formio/angular";
 
 export const environment = {
   production: false
 };
 
-/*
- * For easier debugging in development mode, you can import the following file
- * to ignore zone related error stack frames such as `zone.run`, `zoneDelegate.invokeTask`.
- *
- * This import should be commented out in production mode because it will have a negative impact
- * on performance if an error is thrown.
- */
-// import 'zone.js/plugins/zone-error';  // Included with Angular CLI.
+/*export const AppConfig: FormioAppConfig = {
+   appUrl: 'http://localhost:3001',
+   apiUrl: 'http://localhost:3001'
+  };
+
+export const EnvConfig: any = {
+   appUrl: 'http://localhost:3001',
+   backendUrl: 'http://localhost:8080',
+   formId: 'segnalazione-dev',
+   jwt_user: 'segnalazioni',
+   jwt_password: 'segnalazionipasswordanac'
+ }*/
+
+export const AppConfig: FormioAppConfig = {
+  appUrl: 'http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local',
+  apiUrl: 'http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local',
+}
+
+export const EnvConfig: any = {
+  appUrl: 'http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local',
+  backendUrl: 'http://segnalazioni-backend-segnalazioni-ril.apps.ocp.premaster.local',
+  formId: 'segnalazione-dev',
+  jwt_user: 'segnalazioni',
+  jwt_password: 'segnalazionipasswordanac'
+}

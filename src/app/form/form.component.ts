@@ -1,9 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
-import { EnvConfig } from 'src/config';
+import { EnvConfig } from "src/environments/environment";
+
+
+import * as $ from 'jquery';
 
 @Component({
   templateUrl: './form.component.html',
@@ -78,11 +81,11 @@ export class FormComponent implements OnInit {
 
   async formLoad(event: any): Promise<void> {
     this.jwtToken = (await this.repository.authenticate()).token;
-    console.log("token: "+this.jwtToken)
   }
 
   onTop(): void {
-    window.scrollTo(0,0)    
+    window.scrollTo(0,0);
+
   }
 
   render(event: any) {
@@ -117,6 +120,7 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
+
       submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWaitCig(event.data.cig,this.jwtToken));
       
@@ -135,7 +139,6 @@ export class FormComponent implements OnInit {
         submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
         submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
         submissionAux.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
-        console.log("TIPO SOGGETTO: "+responsePG.tipoSoggetto.tipo_soggetto);
       }
     }
 
@@ -148,7 +151,47 @@ export class FormComponent implements OnInit {
 
   }
 
+  private currentSegnalazione: string = "";
+
   onChange(event: any) { 
+
+    if (event.changed && event.changed.component.key === 'appalti' && event.changed.value==='appalti')  {
+      event.data.area_survey = "appalti";
+      this.refreshForm.emit({
+        form: this.form,
+        submission: {
+          data: event.data
+        }
+      });
+    }
+    if (event.changed && event.changed.component.key === 'anticorruzione' && event.changed.value==='anticorruzione')  {
+      event.data.area_survey = "anticorruzione";
+      this.refreshForm.emit({
+        form: this.form,
+        submission: {
+          data: event.data
+        }
+      });
+    }
+    if (event.changed && event.changed.component.key === 'incarichi' && event.changed.value==='incarichi')  {
+      event.data.area_survey = "incarichi";
+      this.refreshForm.emit({
+        form: this.form,
+        submission: {
+          data: event.data
+        }
+      });
+    }
+    if (event.changed && event.changed.component.key === 'trasparenza' && event.changed.value==='trasparenza')  {
+      event.data.area_survey = "trasparenza";
+      this.refreshForm.emit({
+        form: this.form,
+        submission: {
+          data: event.data
+        }
+      });
+    }
+
        if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
           if (event.changed.value.length > 10){
             event.data.ricerca_cig=1;
@@ -165,7 +208,7 @@ export class FormComponent implements OnInit {
 
   }
   
-  constructor(public router:Router, public sub: Submission, private repository: CigRepository) {
+  constructor(public router:Router, public sub: Submission, private repository: CigRepository, private elem: ElementRef) {
   }
 
   get submission() {
