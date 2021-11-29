@@ -106,9 +106,14 @@ export class FormComponent implements OnInit {
 
     let submissionAux = event.data;
 
-    if (event.type === 'cerca_denominazione')
+    if (event.type === 'cerca_ente_denominazione')
     {
-      submissionAux.cerca_button_val = 1;
+      if (submissionAux.ente_per_denominazione!==null || submissionAux.ente_per_denominazione !==0)
+          submissionAux.ente_per_denominazione = 0;
+      else
+          submissionAux.ente_per_denominazione = 1;
+
+      console.log("CAMBIO STATO ENTE PER DENOMINAZIONE: "+submissionAux.ente_per_denominazione);
     }
 
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
@@ -177,9 +182,9 @@ export class FormComponent implements OnInit {
 
       let auxval = "<p>"+
                    "Codice Fiscale: "+event.changed.value.dati_identificativi.codice_fiscale+"<br>"+
-                   "Partita IVA: "+event.changed.value.partita_iva+"<br>"+
-                   "Denominazione: "+event.changed.value.partita_iva+"<br>"+
-                   "Natura giuridica: "+event.changed.value.natura_giuridica+
+                   "Partita IVA: "+event.changed.value.dati_identificativi.partita_iva+"<br>"+
+                   "Denominazione: "+event.changed.value.dati_identificativi.partita_iva+"<br>"+
+                   "Natura giuridica: "+event.changed.value.dati_identificativi.natura_giuridica+
                    "</p>";
 
       console.log("VAL: "+auxval);
