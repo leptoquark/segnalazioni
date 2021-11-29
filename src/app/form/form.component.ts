@@ -106,16 +106,6 @@ export class FormComponent implements OnInit {
 
     let submissionAux = event.data;
 
-    if (event.type === 'cerca_ente_denominazione')
-    {
-      if (submissionAux.ente_per_denominazione!==null || submissionAux.ente_per_denominazione !==0)
-          submissionAux.ente_per_denominazione = 0;
-      else
-          submissionAux.ente_per_denominazione = 1;
-
-      console.log("CAMBIO STATO ENTE PER DENOMINAZIONE: "+submissionAux.ente_per_denominazione);
-    }
-
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(event.data));
@@ -159,6 +149,16 @@ export class FormComponent implements OnInit {
     });
 
   }
+
+
+  private clean(val: string)
+  {
+    if (val==='')
+      return "-";
+    else
+      return val;
+  }
+
   async onChange(event: any) { 
 
 
@@ -178,16 +178,16 @@ export class FormComponent implements OnInit {
     }
 
 
-    if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
 
-      let auxval = "<p>"+
-                   "Codice Fiscale: "+event.changed.value.dati_identificativi.codice_fiscale+"<br>"+
-                   "Partita IVA: "+event.changed.value.dati_identificativi.partita_iva+"<br>"+
-                   "Denominazione: "+event.changed.value.dati_identificativi.partita_iva+"<br>"+
-                   "Natura giuridica: "+event.changed.value.dati_identificativi.natura_giuridica+
-                   "</p>";
 
-      console.log("VAL: "+auxval);
+    if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  { 
+
+      let auxval = "<ul class='list-group list-group-flush'>"+
+                   "<li class='list-group-item'>"+"Codice Fiscale: "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
+                   "<li class='list-group-item'>"+"Partita IVA: "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"Denominazione: "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"Natura giuridica: "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "</ul>";
 
       event.data.summary_denominazione = auxval;
 
