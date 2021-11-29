@@ -159,7 +159,7 @@ export class FormComponent implements OnInit {
     if (event.changed && event.changed.component.key === 'denominazione_amministrazione' && event.changed.value)  {
 
       console.log("changed-value: "+event.changed.value)
-      
+
       event.data.cerca_buntton_val = 0;
 
         this.refreshForm.emit({
@@ -174,7 +174,7 @@ export class FormComponent implements OnInit {
 
     if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
 
-      console.log("changed-value: "+event.changed.value)
+      console.log("changed-value: "+JSON.stringify(event.changed.value))
 
       let response =  (await this.repository.getResponseWaitPGLike(
         event.data.value,this.jwtToken));
