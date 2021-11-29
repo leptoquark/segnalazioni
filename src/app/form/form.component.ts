@@ -107,14 +107,6 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'cerca_denominazione')
     {
-      let response =  (await this.repository.getResponseWaitPGLike(
-                                               submissionAux.denominazione_amministrazione,this.jwtToken));
-
-      console.log(JSON.stringify(response));
-
-      submissionAux.summary_denominazione = "<p>TESTO DI PROVA: "+
-                                            JSON.stringify(response)
-                                            "</p>";
       submissionAux.cerca_button_val = 1;
     }
 
@@ -161,7 +153,28 @@ export class FormComponent implements OnInit {
     });
 
   }
-  onChange(event: any) { 
+  async onChange(event: any) { 
+
+
+    if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
+
+      let response =  (await this.repository.getResponseWaitPGLike(
+        event.data.value,this.jwtToken));
+
+        console.log(JSON.stringify(response));
+
+        event.data.summary_denominazione = "<p>TESTO DI PROVA: "+
+                                                JSON.stringify(response)
+                                           "</p>";
+
+        this.refreshForm.emit({
+          form: this.form,
+          submission: {
+            data: event.data
+          }
+        });
+
+    }
 
     if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
        if (event.changed.value.length > 10){
