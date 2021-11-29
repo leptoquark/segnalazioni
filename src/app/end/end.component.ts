@@ -6,11 +6,15 @@ import jspdf, { jsPDF } from 'jspdf';
 import { EnvConfig } from 'src/environments/environment';
 import { Submission } from '../model/submission.model';
 
+declare var require: any
+const FileSaver = require('file-saver');
+
 @Component({
   templateUrl: './end.component.html',
   styleUrls: ['./end.component.css']
 })
 export class EndComponent  implements OnInit {
+  http: any;
 
   ngOnInit(): void {
     var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
@@ -19,7 +23,6 @@ export class EndComponent  implements OnInit {
       Formio.createForm(document.getElementById('formio-full'), form, {
         noDefaultSubmitButton: true,
         readOnly: true,
-        //renderMode: 'html',
         renderMode: 'flat',
       }).then(function(instance) {
         formio.loadSubmission().then(function(submission: any) {
@@ -27,7 +30,9 @@ export class EndComponent  implements OnInit {
         });
       });
     });
+
   }
+
 
   constructor(private route:Router, private sub: Submission)
   {
@@ -38,16 +43,19 @@ export class EndComponent  implements OnInit {
     return this.sub.getId();
   }
 
-  options: Object = {
-    readOnly: true,
-    renderMode: 'html',
-    flattened: true,
-  };
+
 
   refreshForm = new EventEmitter();
   form: any;
 
-  public downloadAsPDF()  
+  public downloadAsPDF()
+  {
+      FileSaver.saveAs(EnvConfig.backendUrl+
+                        '/ws/report?id='+this.sub.getId,
+                        "ricevuta_"+this.sub.getId+".pdf");
+  }
+
+  /*public downloadAsPDF()  
   {
     var data = document.getElementById('content');  
     html2canvas(data as HTMLElement).then(canvas => {
@@ -71,7 +79,7 @@ export class EndComponent  implements OnInit {
         }
         doc.save( 'submission.pdf');
     });  
-  }
+  }*/
 
   public edit()
   {

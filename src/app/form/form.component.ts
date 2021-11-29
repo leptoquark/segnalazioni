@@ -1,12 +1,10 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Renderer2, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
-
-
-import * as $ from 'jquery';
+import { summaryFileName } from '@angular/compiler/src/aot/util';
 
 @Component({
   templateUrl: './form.component.html',
@@ -17,9 +15,9 @@ import * as $ from 'jquery';
 export class FormComponent implements OnInit {
   @ViewChild('formEl')
   formEl!: FormioComponent;
+  form: any;
 
   refreshForm = new EventEmitter();
-  form: any;
 
   private jwtToken:string = "";
 
@@ -105,7 +103,18 @@ export class FormComponent implements OnInit {
   }
   async customEvent(event: any)
   {
+
     let submissionAux = event.data;
+
+    if (event.type === 'cerca_denominazione')
+    {
+      let response =  (await this.repository.getResponseWaitPGLike(
+                                               submissionAux.denominazione_amministrazione,this.jwtToken));
+      submissionAux.summary_denominazione = "<p>TESTO DI PROVA: "+
+                                            response.elenco[0].dati_identificativi.denominazione+
+                                            "</p>";
+      submissionAux.cerca_button_val = 1;
+    }
 
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
@@ -150,59 +159,19 @@ export class FormComponent implements OnInit {
     });
 
   }
-
-  private currentSegnalazione: string = "";
-
   onChange(event: any) { 
 
-    if (event.changed && event.changed.component.key === 'appalti' && event.changed.value==='appalti')  {
-      event.data.area_survey = "appalti";
-      this.refreshForm.emit({
-        form: this.form,
-        submission: {
-          data: event.data
-        }
-      });
-    }
-    if (event.changed && event.changed.component.key === 'anticorruzione' && event.changed.value==='anticorruzione')  {
-      event.data.area_survey = "anticorruzione";
-      this.refreshForm.emit({
-        form: this.form,
-        submission: {
-          data: event.data
-        }
-      });
-    }
-    if (event.changed && event.changed.component.key === 'incarichi' && event.changed.value==='incarichi')  {
-      event.data.area_survey = "incarichi";
-      this.refreshForm.emit({
-        form: this.form,
-        submission: {
-          data: event.data
-        }
-      });
-    }
-    if (event.changed && event.changed.component.key === 'trasparenza' && event.changed.value==='trasparenza')  {
-      event.data.area_survey = "trasparenza";
-      this.refreshForm.emit({
-        form: this.form,
-        submission: {
-          data: event.data
-        }
-      });
-    }
-
-       if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
-          if (event.changed.value.length > 10){
+    if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
+       if (event.changed.value.length > 10){
             event.data.ricerca_cig=1;
             event.data.cig=event.data.cig.substring(0, 10);
 
-          this.refreshForm.emit({
-            form: this.form,
-            submission: {
-              data: event.data
-            }
-          });
+            this.refreshForm.emit({
+              form: this.form,
+              submission: {
+                data: event.data
+              }
+            });
         }
       }
 

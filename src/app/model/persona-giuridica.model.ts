@@ -16,6 +16,11 @@ export class PersonaGiuridica {
     componenti!: any[];
 }
 
+@Injectable()
+export class PersoneGiuridiche {
+    elenco!: PersonaGiuridica[];
+}
+
 export class NaturaGiuridica {
     codice!: string;
     descrizione!: string;

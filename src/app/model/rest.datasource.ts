@@ -1,20 +1,22 @@
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpHeaders } from "@angular/common/http"
 import { Cig } from "./cig.model";
-import { PersonaGiuridica } from "./persona-giuridica.model";
+import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { JWT } from "./jwt.model";
 import { EnvConfig } from "src/environments/environment";
 
 @Injectable()
 export class RestDataSource {
-    baseUrl_appalti: string;
-    baseUrl_personaGiuridica: string;
-    baseUrl_authenticate: string;
+    private baseUrl_appalti: string;
+    private baseUrl_personaGiuridica: string;
+    private baseUrl_personaGiuridicaLike: string;
+    private baseUrl_authenticate: string;
 
        
     constructor(private http: HttpClient) {
        this.baseUrl_appalti = EnvConfig.backendUrl+`/ws/appalti/`;
-       this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/`;
+       this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/?cf=`;
+       this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazione=`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
@@ -42,6 +44,20 @@ export class RestDataSource {
        };
 
        let data = await this.http.get<PersonaGiuridica>(this.baseUrl_personaGiuridica+sa,httpOptions).toPromise();
+       return data;
+    }
+
+    async getInfoFromSALikeWait(saLike: string, jwt: string): Promise<PersoneGiuridiche>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Authorization':'Bearer '+jwt})
+       };
+
+       let data = await this.http.get<PersoneGiuridiche>(this.baseUrl_personaGiuridicaLike+saLike,httpOptions).toPromise();
        return data;
     }
 
