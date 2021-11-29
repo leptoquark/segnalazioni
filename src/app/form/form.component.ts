@@ -4,7 +4,6 @@ import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
-import { summaryFileName } from '@angular/compiler/src/aot/util';
 
 @Component({
   templateUrl: './form.component.html',
@@ -110,8 +109,11 @@ export class FormComponent implements OnInit {
     {
       let response =  (await this.repository.getResponseWaitPGLike(
                                                submissionAux.denominazione_amministrazione,this.jwtToken));
+
+      console.log(JSON.stringify(response));
+
       submissionAux.summary_denominazione = "<p>TESTO DI PROVA: "+
-                                            response.elenco[0].dati_identificativi.denominazione+
+                                            JSON.stringify(response)
                                             "</p>";
       submissionAux.cerca_button_val = 1;
     }
