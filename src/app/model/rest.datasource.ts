@@ -16,7 +16,7 @@ export class RestDataSource {
     constructor(private http: HttpClient) {
        this.baseUrl_appalti = EnvConfig.backendUrl+`/ws/appalti/`;
        this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/?cf=`;
-       this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazione=`;
+       this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
