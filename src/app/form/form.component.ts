@@ -4,6 +4,7 @@ import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
+import { EventManager } from '@angular/platform-browser';
 
 @Component({
   templateUrl: './form.component.html',
@@ -174,16 +175,12 @@ export class FormComponent implements OnInit {
 
     if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
 
-      console.log("changed-value: "+JSON.stringify(event.changed.value))
-
-      let response =  (await this.repository.getResponseWaitPGLike(
-        event.data.value,this.jwtToken));
-
-        console.log(JSON.stringify(response));
-
-        event.data.summary_denominazione = "<p>TESTO DI PROVA: "+
-                                                JSON.stringify(response)
-                                           "</p>";
+      event.data.summary_denominazione = "<p>"+
+                                        "Codice Fiscale: "+event.changed.value.dati_identificativi.codice_fiscale+"<br>"+
+                                        "Partita IVA: "+event.changed.value.partita_iva+"<br>"+
+                                        "Denominazione: "+event.changed.value.partita_iva+"<br>"+
+                                        "Natura giuridica: "+event.changed.value.natura_giuridica+
+                                        "</p>";
 
         this.refreshForm.emit({
           form: this.form,
