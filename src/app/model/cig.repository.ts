@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { PreloadingStrategy } from "@angular/router";
 import { EnvConfig } from "src/environments/environment";
 import { Cig } from "./cig.model";
 import { JWT } from "./jwt.model";

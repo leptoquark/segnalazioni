@@ -4,13 +4,12 @@ import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
-import { EventManager } from '@angular/platform-browser';
+import { AnyForJSON } from 'formiojs';
 
 @Component({
   templateUrl: './form.component.html',
   styleUrls: ['./form.component.css']
 })
-
 
 export class FormComponent implements OnInit {
   @ViewChild('formEl')
@@ -20,6 +19,8 @@ export class FormComponent implements OnInit {
   refreshForm = new EventEmitter();
 
   private jwtToken:string = "";
+
+  private tmpPG!: AnyForJSON;
 
   options: Object = {
     submitMessage: "",
@@ -117,6 +118,60 @@ export class FormComponent implements OnInit {
       submissionAux.cig="";
     }
 
+    if (event.type === 'cerca_ente_cf'){
+      let response = (await this.repository.getResponseWaitPG(submissionAux.cf_amministrazione,this.jwtToken))
+
+      console.log(JSON.stringify(response));
+
+      let auxval = "Nessun valore trovato!";
+      
+      if (response)
+        auxval = "<ul class='list-group list-group-flush'>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.denominazione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(response.dati_identificativi.codice_fiscale)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "</ul>";
+      
+      submissionAux.summary_cf = auxval;
+
+      this.tmpPG = response;
+
+    }
+
+    if (event.type === 'conferma_selezione_amministrazione' || event.type === 'conferma_selezione_cf') {
+
+        submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
+        submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
+        submissionAux.regione_rpct = this.clean("");
+        submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
+        submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
+        submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
+        submissionAux.mail_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
+
+        if (this.tmpPG.dati_identificativi.contatti.TELEFONO)
+          submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+        else
+          submissionAux.telefono_rpct =  0;
+
+        if (event.type === 'conferma_selezione_amministrazione')
+        {
+          submissionAux.summary_denominazione =
+            submissionAux.summary_denominazione.split('list-group-item').join('list-group-item list-group-item-primary');
+            submissionAux.cf_amministrazione = "";
+          
+        }
+        else 
+        {
+          submissionAux.summary_cf =
+            submissionAux.summary_cf.split('list-group-item').join('list-group-item list-group-item-primary');
+            submissionAux.denominazione_amministrazione = "";
+        }
+
+    }
+
+
     if (event.type === 'valida_cig')
     {
 
@@ -127,7 +182,6 @@ export class FormComponent implements OnInit {
         submissionAux.cig_trovato=1;
       else
       {
-        console.log("Ricerca per: "+response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE);
         let responsePG =
           (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE,this.jwtToken));
         submissionAux.cig_trovato=0;
@@ -150,7 +204,6 @@ export class FormComponent implements OnInit {
 
   }
 
-
   private clean(val: string)
   {
     if (val==='')
@@ -161,32 +214,15 @@ export class FormComponent implements OnInit {
 
   async onChange(event: any) { 
 
-
-    if (event.changed && event.changed.component.key === 'denominazione_amministrazione' && event.changed.value)  {
-
-      console.log("changed-value: "+event.changed.value)
-
-      event.data.cerca_buntton_val = 0;
-
-        this.refreshForm.emit({
-          form: this.form,
-          submission: {
-            data: event.data
-          }
-        });
-
-    }
-
-
-
-
-    if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  { 
+    if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
+      
+      this.tmpPG = event.changed.value;
 
       let auxval = "<ul class='list-group list-group-flush'>"+
-                   "<li class='list-group-item'>"+"Codice Fiscale: "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
-                   "<li class='list-group-item'>"+"Partita IVA: "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"Denominazione: "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"Natura giuridica: "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
 
       event.data.summary_denominazione = auxval;
@@ -197,7 +233,6 @@ export class FormComponent implements OnInit {
             data: event.data
           }
         });
-
     }
 
     if (event.changed && event.changed.component.key === 'cig' && event.changed.value)  {
