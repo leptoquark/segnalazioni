@@ -4,7 +4,7 @@ import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
-import { AnyForJSON } from 'formiojs';
+import { AnyForJSON, Formio } from 'formiojs';
 
 @Component({
   templateUrl: './form.component.html',
@@ -13,8 +13,8 @@ import { AnyForJSON } from 'formiojs';
 
 export class FormComponent implements OnInit {
   @ViewChild('formEl')
-  formEl!: FormioComponent;
-  form: any;
+  formEl!: FormioComponent[];
+  myform: any;
 
   refreshForm = new EventEmitter();
 
@@ -95,13 +95,16 @@ export class FormComponent implements OnInit {
       submissionDraft = JSON.parse(dataAux);
 
     this.refreshForm.emit({
-      form: this.form,
+      form: this.myform,
       submission: {
         data: submissionDraft
       }
     });
    
   }
+  
+  private df: any;
+
   async customEvent(event: any)
   {
 
@@ -110,6 +113,22 @@ export class FormComponent implements OnInit {
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(event.data));
+    }
+
+    if (event.type === 'cancella_documento_fronte') {
+      console.log(submissionAux.documento_fronte);
+
+      submissionAux.documento_fronte = this.df;
+      
+      
+    }
+
+
+    if (event.type === 'cancella_documento_retro') {
+      console.log("documento retro")
+      this.df = submissionAux.documento_fronte;
+
+      
     }
 
     if (event.type === 'cancella_cig'){
@@ -150,23 +169,39 @@ export class FormComponent implements OnInit {
         submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
         submissionAux.mail_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
 
-        if (this.tmpPG.dati_identificativi.contatti.TELEFONO)
-          submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
-        else
-          submissionAux.telefono_rpct =  0;
+        submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
+        submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
+        submissionAux.regione = this.clean("");
+        submissionAux.provincia= this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
+        submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
+        submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
+        submissionAux.mail = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
+
+        submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+
+        submissionAux.telefono = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+
 
         if (event.type === 'conferma_selezione_amministrazione')
         {
           submissionAux.summary_denominazione =
             submissionAux.summary_denominazione.split('list-group-item').join('list-group-item list-group-item-primary');
-            submissionAux.cf_amministrazione = "";
+          submissionAux.cf_amministrazione = "";
+
+          submissionAux.summary_denominazione2 =
+            submissionAux.summary_denominazione2.split('list-group-item').join('list-group-item list-group-item-primary');
+          submissionAux.cf_amministrazione2 = "";
           
         }
         else 
         {
           submissionAux.summary_cf =
             submissionAux.summary_cf.split('list-group-item').join('list-group-item list-group-item-primary');
-            submissionAux.denominazione_amministrazione = "";
+          submissionAux.denominazione_amministrazione = "";
+
+          submissionAux.summary_cf2 =
+            submissionAux.summary_cf2.split('list-group-item').join('list-group-item list-group-item-primary');
+          submissionAux.denominazione_amministrazione2 = "";
         }
 
     }
@@ -196,7 +231,7 @@ export class FormComponent implements OnInit {
     }
 
     this.refreshForm.emit({
-      form: this.form,
+      form: this.myform,
       submission: {
         data: submissionAux
       }
@@ -219,6 +254,7 @@ export class FormComponent implements OnInit {
       this.tmpPG = event.changed.value;
 
       let auxval = "<ul class='list-group list-group-flush'>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
@@ -228,7 +264,7 @@ export class FormComponent implements OnInit {
       event.data.summary_denominazione = auxval;
 
         this.refreshForm.emit({
-          form: this.form,
+          form: this.myform,
           submission: {
             data: event.data
           }
@@ -241,7 +277,7 @@ export class FormComponent implements OnInit {
             event.data.cig=event.data.cig.substring(0, 10);
 
             this.refreshForm.emit({
-              form: this.form,
+              form: this.myform,
               submission: {
                 data: event.data
               }

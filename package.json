@@ -31,6 +31,7 @@
     "angular-formio": "^4.11.5",
     "bootstrap": "^4.6.0",
     "bootstrap-italia": "^0.9.6",
+    "circular-json": "^0.5.9",
     "design-angular-kit": "^0.13.0",
     "file-saver": "^2.0.5",
     "formiojs": "^4.13.5",
