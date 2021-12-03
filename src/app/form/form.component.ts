@@ -138,7 +138,12 @@ export class FormComponent implements OnInit {
     }
 
     if (event.type === 'cerca_ente_cf'){
-      let response = (await this.repository.getResponseWaitPG(submissionAux.cf_amministrazione,this.jwtToken))
+
+      let valcf = submissionAux.cf_amministrazione;
+      if (!valcf)
+        valcf = submissionAux.cf_amministrazione2;
+
+      let response = (await this.repository.getResponseWaitPG(valcf,this.jwtToken))
 
       console.log(JSON.stringify(response));
 
@@ -152,14 +157,19 @@ export class FormComponent implements OnInit {
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
+      else
+        auxval = "<p><b>CODICE FISCALE NON CORRETTO O NON TROVATO</b></p>"
+
+      console.log(auxval);
       
       submissionAux.summary_cf = auxval;
+      submissionAux.summary_cf2 = auxval;
 
       this.tmpPG = response;
 
     }
 
-    if (event.type === 'conferma_selezione_amministrazione' || event.type === 'conferma_selezione_cf') {
+    if (event.type === 'conferma_selezione_amministrazione_rpct' || event.type === 'conferma_selezione_cf_rpct') {
 
         submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
         submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
@@ -169,42 +179,51 @@ export class FormComponent implements OnInit {
         submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
         submissionAux.mail_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
 
-        submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
-        submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
-        submissionAux.regione = this.clean("");
-        submissionAux.provincia= this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
-        submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
-        submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
-        submissionAux.mail = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
-
         submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
 
-        submissionAux.telefono = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
 
-
-        if (event.type === 'conferma_selezione_amministrazione')
+        if (event.type === 'conferma_selezione_amministrazione_rpct')
         {
           submissionAux.summary_denominazione =
             submissionAux.summary_denominazione.split('list-group-item').join('list-group-item list-group-item-primary');
           submissionAux.cf_amministrazione = "";
-
-          submissionAux.summary_denominazione2 =
-            submissionAux.summary_denominazione2.split('list-group-item').join('list-group-item list-group-item-primary');
-          submissionAux.cf_amministrazione2 = "";
-          
         }
         else 
         {
           submissionAux.summary_cf =
             submissionAux.summary_cf.split('list-group-item').join('list-group-item list-group-item-primary');
           submissionAux.denominazione_amministrazione = "";
-
-          submissionAux.summary_cf2 =
-            submissionAux.summary_cf2.split('list-group-item').join('list-group-item list-group-item-primary');
-          submissionAux.denominazione_amministrazione2 = "";
         }
 
     }
+
+    if (event.type === 'conferma_selezione_amministrazione' || event.type === 'conferma_selezione_cf') {
+
+      submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
+      submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
+      submissionAux.regione = this.clean("");
+      submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
+      submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
+      submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
+      submissionAux.mail = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
+
+      submissionAux.telefono = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+
+
+      if (event.type === 'conferma_selezione_amministrazione')
+      {
+        submissionAux.summary_denominazione2 =
+          submissionAux.summary_denominazione2.split('list-group-item').join('list-group-item list-group-item-primary');
+        submissionAux.cf_amministrazione2 = "";
+      }
+      else 
+      {
+        submissionAux.summary_cf2 =
+          submissionAux.summary_cf2.split('list-group-item').join('list-group-item list-group-item-primary');
+        submissionAux.denominazione_amministrazione2 = "";
+      }
+
+  }
 
 
     if (event.type === 'valida_cig')
@@ -262,6 +281,28 @@ export class FormComponent implements OnInit {
                    "</ul>";
 
       event.data.summary_denominazione = auxval;
+
+        this.refreshForm.emit({
+          form: this.myform,
+          submission: {
+            data: event.data
+          }
+        });
+    }
+
+    if (event.changed && event.changed.component.key === 'selezione_ente2' && event.changed.value)  {
+      
+      this.tmpPG = event.changed.value;
+
+      let auxval = "<ul class='list-group list-group-flush'>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "</ul>";
+
+      event.data.summary_denominazione2 = auxval;
 
         this.refreshForm.emit({
           form: this.myform,
