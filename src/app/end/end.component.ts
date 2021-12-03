@@ -50,9 +50,10 @@ export class EndComponent  implements OnInit {
 
   public downloadAsPDF()
   {
+    console.log("ID: "+this.sub.getId)
       FileSaver.saveAs(EnvConfig.backendUrl+
-                        '/ws/report?id='+this.sub.getId,
-                        "ricevuta_"+this.sub.getId+".pdf");
+                        '/ws/report?id='+this.sub.getId(),
+                        "ricevuta_"+this.sub.getId()+".pdf");
   }
 
   /*public downloadAsPDF()  
