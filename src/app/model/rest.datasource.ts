@@ -10,6 +10,8 @@ export class RestDataSource {
     private baseUrl_appalti: string;
     private baseUrl_personaGiuridica: string;
     private baseUrl_personaGiuridicaLike: string;
+    private baseUrl_regione: string;
+
     private baseUrl_authenticate: string;
 
        
@@ -17,6 +19,7 @@ export class RestDataSource {
        this.baseUrl_appalti = EnvConfig.backendUrl+`/ws/appalti/`;
        this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/?cf=`;
        this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
+       this.baseUrl_regione = EnvConfig.backendUrl+`/regioneFromProvincia?provincia=`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
@@ -58,6 +61,20 @@ export class RestDataSource {
        };
 
        let data = await this.http.get<PersoneGiuridiche>(this.baseUrl_personaGiuridicaLike+saLike,httpOptions).toPromise();
+       return data;
+    }
+
+    async getRegioneFromProvincia(provincia: string, jwt: string): Promise<string>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Authorization':'Bearer '+jwt})
+       };
+
+       let data = await this.http.get<string>(this.baseUrl_regione+provincia,httpOptions).toPromise();
        return data;
     }
 

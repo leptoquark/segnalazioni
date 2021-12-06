@@ -173,7 +173,9 @@ export class FormComponent implements OnInit {
 
         submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
         submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
-        submissionAux.regione_rpct = this.clean("");
+
+        let regione = this.repository.getResponseWaitRegioneFromProvincia(this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken);
+        submissionAux.regione_rpct = regione;
         submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
         submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
@@ -201,7 +203,8 @@ export class FormComponent implements OnInit {
 
       submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
       submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
-      submissionAux.regione = this.clean("");
+      let regione = this.repository.getResponseWaitRegioneFromProvincia(this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken);
+      submissionAux.regione = regione;
       submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
       submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
       submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);

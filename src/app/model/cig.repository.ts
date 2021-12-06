@@ -29,6 +29,10 @@ export class CigRepository {
         return this.datasource.getInfoFromCigWait(codice_cig, jwt);
     }
 
+    getResponseWaitRegioneFromProvincia(provincia: string, jwt: string) :Promise<String> {
+        return this.datasource.getRegioneFromProvincia(provincia, jwt);
+    }
+
     authenticate():Promise<JWT> {
         return this.datasource.autheticate(EnvConfig.jwt_user, EnvConfig.jwt_password);
     }
