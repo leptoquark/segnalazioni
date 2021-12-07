@@ -107,7 +107,6 @@ export class FormComponent implements OnInit {
 
   async customEvent(event: any)
   {
-
     let submissionAux = event.data;
 
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
@@ -127,8 +126,6 @@ export class FormComponent implements OnInit {
     if (event.type === 'cancella_documento_retro') {
       console.log("documento retro")
       this.df = submissionAux.documento_fronte;
-
-      
     }
 
     if (event.type === 'cancella_cig'){
@@ -147,7 +144,7 @@ export class FormComponent implements OnInit {
 
       console.log(JSON.stringify(response));
 
-      let auxval = "Nessun valore trovato!";
+      let auxval = "<p><b>CODICE FISCALE NON CORRETTO O NON TROVATO</b></p>"
       
       if (response)
         auxval = "<ul class='list-group list-group-flush'>"+
@@ -157,8 +154,7 @@ export class FormComponent implements OnInit {
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
-      else
-        auxval = "<p><b>CODICE FISCALE NON CORRETTO O NON TROVATO</b></p>"
+
 
       console.log(auxval);
       
@@ -166,7 +162,6 @@ export class FormComponent implements OnInit {
       submissionAux.summary_cf2 = auxval;
 
       this.tmpPG = response;
-
     }
 
     if (event.type === 'conferma_selezione_amministrazione_rpct' || event.type === 'conferma_selezione_cf_rpct') {
@@ -174,8 +169,11 @@ export class FormComponent implements OnInit {
         submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
         submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
 
-        let regione = this.repository.getResponseWaitRegioneFromProvincia(this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken);
+        let regione =
+          (await this.repository.getResponseWaitRegioneFromProvincia(
+            this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
         submissionAux.regione_rpct = regione;
+
         submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
         submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
@@ -196,15 +194,18 @@ export class FormComponent implements OnInit {
             submissionAux.summary_cf.split('list-group-item').join('list-group-item list-group-item-primary');
           submissionAux.denominazione_amministrazione = "";
         }
-
     }
 
     if (event.type === 'conferma_selezione_amministrazione' || event.type === 'conferma_selezione_cf') {
 
       submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
       submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
-      let regione = this.repository.getResponseWaitRegioneFromProvincia(this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken);
+
+      let regione =
+        (await this.repository.getResponseWaitRegioneFromProvincia(
+          this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
       submissionAux.regione = regione;
+
       submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
       submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
       submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
@@ -225,7 +226,6 @@ export class FormComponent implements OnInit {
           submissionAux.summary_cf2.split('list-group-item').join('list-group-item list-group-item-primary');
         submissionAux.denominazione_amministrazione2 = "";
       }
-
   }
 
 
