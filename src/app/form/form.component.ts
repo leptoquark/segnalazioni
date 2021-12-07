@@ -84,7 +84,6 @@ export class FormComponent implements OnInit {
 
   onTop(): void {
     window.scrollTo(0,0);
-
   }
 
   render(event: any) {
@@ -103,8 +102,6 @@ export class FormComponent implements OnInit {
    
   }
   
-  private df: any;
-
   async customEvent(event: any)
   {
     let submissionAux = event.data;
@@ -115,17 +112,12 @@ export class FormComponent implements OnInit {
     }
 
     if (event.type === 'cancella_documento_fronte') {
-      console.log(submissionAux.documento_fronte);
-
-      submissionAux.documento_fronte = this.df;
-      
-      
+      console.log(submissionAux.documento_fronte);     
     }
 
 
     if (event.type === 'cancella_documento_retro') {
       console.log("documento retro")
-      this.df = submissionAux.documento_fronte;
     }
 
     if (event.type === 'cancella_cig'){
@@ -154,9 +146,6 @@ export class FormComponent implements OnInit {
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
-
-
-      console.log(auxval);
       
       submissionAux.summary_cf = auxval;
       submissionAux.summary_cf2 = auxval;
@@ -169,10 +158,10 @@ export class FormComponent implements OnInit {
         submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
         submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
 
-        let regione =
+       /* let regione =
           (await this.repository.getResponseWaitRegioneFromProvincia(
-            this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
-        submissionAux.regione_rpct = regione;
+            this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));*/
+        submissionAux.regione_rpct = " - ";
 
         submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
@@ -201,10 +190,10 @@ export class FormComponent implements OnInit {
       submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
       submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
 
-      let regione =
+     /* let regione =
         (await this.repository.getResponseWaitRegioneFromProvincia(
-          this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
-      submissionAux.regione = regione;
+          this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));*/
+      submissionAux.regione = "-";
 
       submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
       submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
