@@ -234,6 +234,7 @@ export class FormComponent implements OnInit {
 
       submissionAux.cancella_cig=0;
       let response =  (await this.repository.getResponseWaitCig(event.data.cig,this.jwtToken));
+      submissionAux.query_cig=1;
       
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
