@@ -158,10 +158,11 @@ export class FormComponent implements OnInit {
         submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
         submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
 
-       /* let regione =
+        let regione =
           (await this.repository.getResponseWaitRegioneFromProvincia(
-            this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));*/
-        submissionAux.regione_rpct = " - ";
+            this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
+                
+        submissionAux.regione_rpct = regione.nome;
 
         submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
@@ -190,10 +191,10 @@ export class FormComponent implements OnInit {
       submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
       submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
 
-     /* let regione =
+     let regione =
         (await this.repository.getResponseWaitRegioneFromProvincia(
-          this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));*/
-      submissionAux.regione = "-";
+          this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
+      submissionAux.regione = regione.nome;
 
       submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
       submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);

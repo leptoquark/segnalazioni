@@ -4,6 +4,7 @@ import { Cig } from "./cig.model";
 import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { JWT } from "./jwt.model";
 import { EnvConfig } from "src/environments/environment";
+import { Regione } from "./localizzazione.model";
 
 @Injectable()
 export class RestDataSource {
@@ -64,7 +65,7 @@ export class RestDataSource {
        return data;
     }
 
-    async getRegioneFromProvincia(provincia: string, jwt: string): Promise<string>
+    async getRegioneFromProvincia(provincia: string, jwt: string): Promise<Regione>
     {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -74,7 +75,7 @@ export class RestDataSource {
                                     'Authorization':'Bearer '+jwt})
        };
 
-       let data = await this.http.get<string>(this.baseUrl_regione+provincia,httpOptions).toPromise();
+       let data = await this.http.get<Regione>(this.baseUrl_regione+provincia,httpOptions).toPromise();
        return data;
     }
 

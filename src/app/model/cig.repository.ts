@@ -3,6 +3,7 @@ import { PreloadingStrategy } from "@angular/router";
 import { EnvConfig } from "src/environments/environment";
 import { Cig } from "./cig.model";
 import { JWT } from "./jwt.model";
+import { Regione } from "./localizzazione.model";
 import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { RestDataSource } from "./rest.datasource";
 
@@ -29,7 +30,7 @@ export class CigRepository {
         return this.datasource.getInfoFromCigWait(codice_cig, jwt);
     }
 
-    getResponseWaitRegioneFromProvincia(provincia: string, jwt: string) :Promise<String> {
+    getResponseWaitRegioneFromProvincia(provincia: string, jwt: string) :Promise<Regione> {
         return this.datasource.getRegioneFromProvincia(provincia, jwt);
     }
 
