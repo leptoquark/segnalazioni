@@ -4,7 +4,7 @@ import { CigRepository } from '../model/cig.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
-import { AnyForJSON, Formio } from 'formiojs';
+import { AnyForJSON } from 'formiojs';
 
 @Component({
   templateUrl: './form.component.html',
@@ -111,8 +111,9 @@ export class FormComponent implements OnInit {
       localStorage.setItem("draft",JSON.stringify(event.data));
     }
 
+
     if (event.type === 'cancella_documento_fronte') {
-      console.log(submissionAux.documento_fronte);     
+      console.log("cancella doc: "+submissionAux.delete_doc)
     }
 
 
@@ -132,13 +133,19 @@ export class FormComponent implements OnInit {
       if (!valcf)
         valcf = submissionAux.cf_amministrazione2;
 
-      let response = (await this.repository.getResponseWaitPG(valcf,this.jwtToken))
+      let response = null;
+      try {
+        response = (await this.repository.getResponseWaitPG(valcf,this.jwtToken))       
+      } catch (error) {
+        
+      }
 
       console.log(JSON.stringify(response));
 
-      let auxval = "<p><b>CODICE FISCALE NON CORRETTO O NON TROVATO</b></p>"
+      let auxval = "<p class='p-3 mb-2 bg-danger text-dark font-weight-bold'>CODICE FISCALE NON CORRETTO O NON TROVATO</p>"
       
       if (response)
+      {
         auxval = "<ul class='list-group list-group-flush'>"+
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.denominazione)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(response.dati_identificativi.codice_fiscale)+"</li>"+
@@ -146,6 +153,11 @@ export class FormComponent implements OnInit {
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
+                   
+        submissionAux.cf_trovato = "NON_TROVATO";
+      }
+      else
+      submissionAux.cf_trovato = "NON_TROVATO";
       
       submissionAux.summary_cf = auxval;
       submissionAux.summary_cf2 = auxval;
@@ -162,7 +174,7 @@ export class FormComponent implements OnInit {
           (await this.repository.getResponseWaitRegioneFromProvincia(
             this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
                 
-        submissionAux.regione_rpct = regione.nome;
+        submissionAux.regione_rpct = regione.nome.toUpperCase;
 
         submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
@@ -194,7 +206,7 @@ export class FormComponent implements OnInit {
      let regione =
         (await this.repository.getResponseWaitRegioneFromProvincia(
           this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
-      submissionAux.regione = regione.nome;
+      submissionAux.regione = regione.nome.toUpperCase;
 
       submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
       submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
@@ -221,10 +233,24 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'valida_cig')
     {
-
+      submissionAux.query_cig=0;
       submissionAux.cancella_cig=0;
+      this.refreshForm.emit({
+        form: this.myform,
+        submission: {
+          data: submissionAux
+        }
+      });
       let response =  (await this.repository.getResponseWaitCig(event.data.cig,this.jwtToken));
       submissionAux.query_cig=1;
+
+
+      this.refreshForm.emit({
+        form: this.myform,
+        submission: {
+          data: submissionAux
+        }
+      });
       
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
@@ -255,7 +281,7 @@ export class FormComponent implements OnInit {
   private clean(val: string)
   {
     if (val==='')
-      return "-";
+      return "";
     else
       return val;
   }
