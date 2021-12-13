@@ -46,6 +46,11 @@ export class FormComponent implements OnInit {
           next: 'Avanti',
           previous: 'Sezione Precedente',
           submit: 'Invia e completa la sottomissione',
+          'Drop files to attach,':'Aggiungi i file spostandoli nell\'area sottostante,',
+          'or':'oppure',
+          'browse': 'clicca qui per allegare',
+          'No choices to choose from': 'nessuna selezione disponibile',
+          'Type to search': 'testo da cercare',
           'Add Another': 'Aggiungi',
           'File Name': 'Nome del file',
           'Size': 'Dim.',
@@ -81,6 +86,12 @@ export class FormComponent implements OnInit {
   async formLoad(event: any): Promise<void> {
     this.jwtToken = (await this.repository.authenticate()).token;
   }
+  
+  onError(error: any): void 
+  {
+    JSON.stringify(error);
+    this.onTop;
+  }
 
   onTop(): void {
     window.scrollTo(0,0);
@@ -109,16 +120,6 @@ export class FormComponent implements OnInit {
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(event.data));
-    }
-
-
-    if (event.type === 'cancella_documento_fronte') {
-      console.log("cancella doc: "+submissionAux.delete_doc)
-    }
-
-
-    if (event.type === 'cancella_documento_retro') {
-      console.log("documento retro")
     }
 
     if (event.type === 'cancella_cig'){
@@ -154,7 +155,7 @@ export class FormComponent implements OnInit {
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
                    "</ul>";
                    
-        submissionAux.cf_trovato = "NON_TROVATO";
+        submissionAux.cf_trovato = "TROVATO";
       }
       else
       submissionAux.cf_trovato = "NON_TROVATO";
