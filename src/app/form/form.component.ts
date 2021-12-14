@@ -263,8 +263,10 @@ export class FormComponent implements OnInit {
         submissionAux.cig_trovato=1;
       else
       {
+        // responsePG rappresenta il contenuto proveniente dalla seconda richiesta a ws per la pg
         let responsePG =
           (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE,this.jwtToken));
+
         submissionAux.cig_trovato=0;
         submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
