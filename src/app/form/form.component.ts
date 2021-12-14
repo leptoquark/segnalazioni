@@ -155,7 +155,9 @@ export class FormComponent implements OnInit {
         auxval = "<ul class='list-group list-group-flush'>"+
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.denominazione,'N.D')+"</li>"+
                    "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(response.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(response.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+
+                      this.clean(response.dati_identificativi.localizzazione.citta.nome + " (" +
+                                 response.dati_identificativi.localizzazione.provincia.nome + ")",'N.D.')+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
                    
@@ -300,7 +302,9 @@ export class FormComponent implements OnInit {
       let auxval = "<ul class='list-group list-group-flush'>"+
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione,'N.D.')+"</li>"+
                    "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+
+                   this.clean(event.changed.value.dati_identificativi.localizzazione.citta.nome + " (" +
+                              event.changed.value.dati_identificativi.localizzazione.provincia.nome + ")",'N.D.')+"</li>"+   
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
 
@@ -321,7 +325,9 @@ export class FormComponent implements OnInit {
       let auxval = "<ul class='list-group list-group-flush'>"+
                    "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione,'N.D.')+"</li>"+
                    "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+
+                   this.clean(event.changed.value.dati_identificativi.localizzazione.citta.nome + " (" +
+                              event.changed.value.dati_identificativi.localizzazione.provincia.nome + ")",'N.D.')+"</li>"+
                    "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
 
