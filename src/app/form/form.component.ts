@@ -112,6 +112,11 @@ export class FormComponent implements OnInit {
     });
    
   }
+
+  private titleCaseWord(word: string) {
+    if (!word) return word;
+    return word[0].toUpperCase() + word.substr(1).toLowerCase();
+  }
   
   async customEvent(event: any)
   {
@@ -148,11 +153,10 @@ export class FormComponent implements OnInit {
       if (response)
       {
         auxval = "<ul class='list-group list-group-flush'>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.denominazione)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(response.dati_identificativi.codice_fiscale)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(response.dati_identificativi.denominazione,'N.D')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(response.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(response.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
                    
         submissionAux.cf_trovato = "TROVATO";
@@ -168,8 +172,8 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'conferma_selezione_amministrazione_rpct' || event.type === 'conferma_selezione_cf_rpct') {
 
-        submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione);
-        submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
+        submissionAux.denominazione_rpct = this.clean(this.tmpPG.dati_identificativi.denominazione,'N.D.');
+        submissionAux.cf_rpct = this.clean(this.tmpPG.dati_identificativi.codice_fiscale,'N.D.');
 
         let regione =
           (await this.repository.getResponseWaitRegioneFromProvincia(
@@ -177,12 +181,12 @@ export class FormComponent implements OnInit {
                 
         submissionAux.regione_rpct = regione.nome;
 
-        submissionAux.provincia_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
-        submissionAux.comune_rpct = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
-        submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
-        submissionAux.mail_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
+        submissionAux.provincia_rpct = this.titleCaseWord(this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome,''));
+        submissionAux.comune_rpct = this.titleCaseWord(this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome,''));
+        submissionAux.pec_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC,'');
+        submissionAux.mail_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL,'');
 
-        submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+        submissionAux.telefono_rpct = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO,'');  
 
 
         if (event.type === 'conferma_selezione_amministrazione_rpct')
@@ -201,20 +205,20 @@ export class FormComponent implements OnInit {
 
     if (event.type === 'conferma_selezione_amministrazione' || event.type === 'conferma_selezione_cf') {
 
-      submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione);
-      submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale);
+      submissionAux.denominazione = this.clean(this.tmpPG.dati_identificativi.denominazione,'N.D.');
+      submissionAux.cf = this.clean(this.tmpPG.dati_identificativi.codice_fiscale,'N.D.');
 
       let regione =
         (await this.repository.getResponseWaitRegioneFromProvincia(
           this.tmpPG.dati_identificativi.localizzazione.provincia.nome, this.jwtToken));
       submissionAux.regione= (regione.nome);
 
-      submissionAux.provincia = this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome);
-      submissionAux.comune = this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome);
-      submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC);
-      submissionAux.mail = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL);
+      submissionAux.provincia = this.titleCaseWord(this.clean(this.tmpPG.dati_identificativi.localizzazione.provincia.nome,''));
+      submissionAux.comune = this.titleCaseWord(this.clean(this.tmpPG.dati_identificativi.localizzazione.citta.nome,''));
+      submissionAux.pec = this.clean(this.tmpPG.dati_identificativi.contatti.MAIL_PEC,'');
+      submissionAux.mail = this.clean(this.tmpPG.dati_identificativi.contatti.EMAIL,'');
 
-      submissionAux.telefono = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO);  
+      submissionAux.telefono = this.clean(this.tmpPG.dati_identificativi.contatti.TELEFONO,'');  
 
 
       if (event.type === 'conferma_selezione_amministrazione')
@@ -279,10 +283,10 @@ export class FormComponent implements OnInit {
 
   }
 
-  private clean(val: string)
+  private clean(val: string, nil: string)
   {
     if (val==='')
-      return "N.D.";
+      return nil;
     else
       return val;
   }
@@ -294,11 +298,10 @@ export class FormComponent implements OnInit {
       this.tmpPG = event.changed.value;
 
       let auxval = "<ul class='list-group list-group-flush'>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
 
       event.data.summary_denominazione = auxval;
@@ -316,11 +319,10 @@ export class FormComponent implements OnInit {
       this.tmpPG = event.changed.value;
 
       let auxval = "<ul class='list-group list-group-flush'>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva)+"</li>"+
-                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione)+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Denominazione:</b> "+this.clean(event.changed.value.dati_identificativi.denominazione,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Codice Fiscale:</b> "+this.clean(event.changed.value.dati_identificativi.codice_fiscale,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Partita IVA:</b> "+this.clean(event.changed.value.dati_identificativi.partita_iva,'N.D.')+"</li>"+
+                   "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(event.changed.value.dati_identificativi.natura_giuridica.descrizione,'N.D.')+"</li>"+
                    "</ul>";
 
       event.data.summary_denominazione2 = auxval;
