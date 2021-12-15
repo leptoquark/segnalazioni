@@ -1,6 +1,6 @@
 import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { CigRepository } from '../model/cig.repository';
+import { SegnalazioniRepository } from '../model/segnalazioni.repository';
 import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
@@ -53,6 +53,7 @@ export class FormComponent implements OnInit {
           'Type to search': 'testo da cercare',
           'Add Another': 'Aggiungi',
           'File Name': 'Nome del file',
+          'Please save all rows before proceeding.': 'cliccare sul tasto \'salva\' prima di procedere',
           'Size': 'Dim.',
           'Save': 'Salva',
           'Cancel': 'Cancella',
@@ -85,6 +86,7 @@ export class FormComponent implements OnInit {
 
   async formLoad(event: any): Promise<void> {
     this.jwtToken = (await this.repository.authenticate()).token;
+
   }
   
   onError(error: any): void 
@@ -131,6 +133,17 @@ export class FormComponent implements OnInit {
       submissionAux.cancella_cig=1;
       submissionAux.cig_trovato=1;
       submissionAux.cig="";
+
+
+      submissionAux.codiceFiscale_sa='';
+      submissionAux.denominazione_sa='';
+      submissionAux.regione_appalti='';
+      submissionAux.comune_appalti='';
+      submissionAux.rup_='';
+      submissionAux.cognome_rup='';
+      submissionAux.descrizione_intervento_segnalazione='';
+      submissionAux.importo_contrattuale='';
+
     }
 
     if (event.type === 'cerca_ente_cf'){
@@ -145,8 +158,6 @@ export class FormComponent implements OnInit {
       } catch (error) {
         
       }
-
-      console.log(JSON.stringify(response));
 
       let auxval = "<p class='p-3 mb-2 bg-danger text-dark font-weight-bold'>CODICE FISCALE NON CORRETTO O NON TROVATO</p>"
       
@@ -265,16 +276,33 @@ export class FormComponent implements OnInit {
       {
         // responsePG rappresenta il contenuto proveniente dalla seconda richiesta a ws per la pg
         let responsePG =
-          (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE,this.jwtToken));
+          (await this.repository.getResponseWaitPG(response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE,this.jwtToken));        
 
         submissionAux.cig_trovato=0;
-        submissionAux.page3Fieldset4PanelColumnsCodiceFiscale=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
-        submissionAux.page3FieldsetDenominazione=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
-        submissionAux.page3Fieldset4PanelColumnsComune=response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')';
-        submissionAux.page3PanelColumnsNome=response.incaricati[0].NOME;
-        submissionAux.page3PanelColumnsCognome=response.incaricati[0].COGNOME;
-        submissionAux.page3FieldsetColumnsDescrizioneIntervento=response.bando.OGGETTO_GARA;
-        submissionAux.page3FieldsetColumnsNumber2=response.bando.IMPORTO_COMPLESSIVO_GARA;
+
+        let aux = "<ul>";
+        for (let data of responsePG.classificazioni) {
+          aux = aux + "</li>"+data.codifica+"</li>";
+        }
+        aux = aux + "</ul>";
+        
+
+        submissionAux.sintesi_cig =  "<ul class='list-group list-group-flush'>"+
+        "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
+        "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
+        "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
+        "<li class='list-group-item'>"+"<b>Classificazioni:</b> "+this.clean(aux,'N.D.')+"</li>"+
+        "</ul>";
+        
+
+        submissionAux.codiceFiscale_sa=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
+        submissionAux.denominazione_sa=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
+        submissionAux.regione_appalti=response.stazione_appaltante.REGIONE;
+        submissionAux.comune_appalti=response.stazione_appaltante.CITTA;
+        submissionAux.rup_=response.incaricati[0].NOME;
+        submissionAux.cognome_rup=response.incaricati[0].COGNOME;
+        submissionAux.descrizione_intervento_segnalazione=response.bando.OGGETTO_GARA;
+        submissionAux.importo_contrattuale=response.bando.IMPORTO_COMPLESSIVO_GARA;
       }
     }
 
@@ -296,6 +324,54 @@ export class FormComponent implements OnInit {
   }
 
   async onChange(event: any) { 
+
+
+    if (event.changed && event.changed.component.key === 'codiceIdentificativoGaraCig' && event.changed.value)  {
+     
+      if (event.changed.value.length < 10 || event.changed.value.length > 10)
+      {
+        event.data.query_cig_aggiuntivo = 0;
+        this.refreshForm.emit({
+          form: this.myform,
+          submission: {
+            data: event.data
+          }
+        });
+      }
+
+      else if (event.changed.value.length === 10)
+
+       {
+
+        event.data.query_cig_aggiuntivo = 0;
+
+
+        let response = (await this.repository.getResponseWaitCig(event.changed.value,this.jwtToken))       
+        let response_aux : string = "<b>CIG: "+event.changed.value+"<b> - non presente in banca dati</b>";
+
+
+        if (response.codice_risposta!=='NOKCN' && response.codice_risposta!=='' && response!=null)
+        {
+          response_aux = 
+          "<ul class='list-group list-group-flush'>"+
+          "<li class='list-group-item'>"+"<b>CIG:</b> "+this.clean(event.changed.value,'N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
+          "</ul>";
+        }
+  
+        event.data.sintesi_cig_aggiuntivo = response_aux;
+        event.data.query_cig_aggiuntivo = 1;
+
+          this.refreshForm.emit({
+            form: this.myform,
+            submission: {
+              data: event.data
+            }
+          });
+      }
+    }
 
     if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
       
@@ -359,7 +435,7 @@ export class FormComponent implements OnInit {
 
   }
   
-  constructor(public router:Router, public sub: Submission, private repository: CigRepository, private elem: ElementRef) {
+  constructor(public router:Router, public sub: Submission, private repository: SegnalazioniRepository, private elem: ElementRef) {
   }
 
   get submission() {

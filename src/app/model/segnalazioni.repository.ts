@@ -7,7 +7,7 @@ import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { RestDataSource } from "./rest.datasource";
 
 @Injectable()
-export class CigRepository {
+export class SegnalazioniRepository {
 
     private cig: Cig = new Cig();
     private personaGiuridica: PersonaGiuridica = new PersonaGiuridica();
