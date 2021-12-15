@@ -297,8 +297,8 @@ export class FormComponent implements OnInit {
 
         submissionAux.codiceFiscale_sa=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.denominazione_sa=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
-        submissionAux.regione_appalti=response.stazione_appaltante.REGIONE;
-        submissionAux.comune_appalti=response.stazione_appaltante.CITTA;
+        submissionAux.regione_appalti=this.titleCaseWord(response.stazione_appaltante.REGIONE);
+        submissionAux.comune_appalti=this.titleCaseWord(response.stazione_appaltante.CITTA);
         submissionAux.rup_=response.incaricati[0].NOME;
         submissionAux.cognome_rup=response.incaricati[0].COGNOME;
         submissionAux.descrizione_intervento_segnalazione=response.bando.OGGETTO_GARA;
