@@ -292,8 +292,8 @@ export class FormComponent implements OnInit {
         submissionAux.sintesi_cig =  "<ul class='list-group list-group-flush'>"+
         "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
         "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
-        "<li class='list-group-item'>"+"<b>Natura giuridica:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
-        "<li class='list-group-item'>"+"<b>Classificazioni:</b> "+this.clean(aux,'N.D.')+"</li>"+
+        "<li class='list-group-item'>"+"<b>Oggetto della gara:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
+        "<li class='list-group-item'>"+"<b>Importo complessivo:</b> "+this.clean("euro "+response.bando.IMPORTO_COMPLESSIVO_GARA,'N.D.')+"</li>"+
         "</ul>";
         
 
@@ -301,6 +301,7 @@ export class FormComponent implements OnInit {
         submissionAux.denominazione_sa=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.regione_appalti=this.titleCaseWord(response.stazione_appaltante.REGIONE);
         submissionAux.comune_appalti=this.titleCaseWord(response.stazione_appaltante.CITTA);
+        submissionAux.provincia_appalti=this.titleCaseWord(responsePG.dati_identificativi.localizzazione.provincia.nome);
         submissionAux.rup_=response.incaricati[0].NOME;
         submissionAux.cognome_rup=response.incaricati[0].COGNOME;
         submissionAux.descrizione_intervento_segnalazione=response.bando.OGGETTO_GARA;
