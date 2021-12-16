@@ -270,6 +270,8 @@ export class FormComponent implements OnInit {
         }
       });
       
+     
+
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
       else
