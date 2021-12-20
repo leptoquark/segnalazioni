@@ -24,6 +24,8 @@ export class EndComponent  implements OnInit {
     this.jwtToken = (await this.repository.authenticate()).token;
     this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).protocollo);
 
+    console.log(this.sub.getProt());
+
     var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
