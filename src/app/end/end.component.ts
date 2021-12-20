@@ -5,6 +5,8 @@ import html2canvas from 'html2canvas';
 import jspdf, { jsPDF } from 'jspdf';
 import { EnvConfig } from 'src/environments/environment';
 import { Submission } from '../model/submission.model';
+import { SegnalazioniRepository } from '../model/segnalazioni.repository';
+
 
 declare var require: any
 const FileSaver = require('file-saver');
@@ -16,8 +18,12 @@ const FileSaver = require('file-saver');
 export class EndComponent  implements OnInit {
   http: any;
 
-  ngOnInit(): void {
-    console.log("PROTOCOLLO: ASSEGNATO: "+this.sub.getProt())
+  private jwtToken:string = "";
+
+  async ngOnInit(): Promise<void> {
+    this.jwtToken = (await this.repository.authenticate()).token;
+    this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).protocollo);
+
     var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
@@ -35,7 +41,7 @@ export class EndComponent  implements OnInit {
   }
 
 
-  constructor(private route:Router, private sub: Submission)
+  constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
 
   }
