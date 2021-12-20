@@ -17,7 +17,7 @@ export class EndComponent  implements OnInit {
   http: any;
 
   ngOnInit(): void {
-    console.log("PROTOCOLLO: ASSEGNATO: "+this.sub.prot.protocollo)
+    console.log("PROTOCOLLO: ASSEGNATO: "+this.sub.getProt())
     var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
@@ -45,7 +45,7 @@ export class EndComponent  implements OnInit {
   }
 
   get prot(): string {
-    return this.sub.prot.protocollo;
+    return this.sub.getProt();
   }
 
 

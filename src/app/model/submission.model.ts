@@ -5,12 +5,19 @@ import { ProtocolloResponse } from "./protocollo.model";
 export class Submission
 {
     public id: string = "";
-    public prot: ProtocolloResponse = new ProtocolloResponse;
+    public prot: string = "";
 
     setId(id: string){
         this.id=id;
     }
     getId(){
         return this.id;
+    }
+
+    setProt(prot: string){
+        this.prot=prot;
+    }
+    getProt(){
+        return this.prot;
     }
 }
