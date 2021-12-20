@@ -5,6 +5,7 @@ import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { JWT } from "./jwt.model";
 import { EnvConfig } from "src/environments/environment";
 import { Regione } from "./localizzazione.model";
+import { ProtocolloResponse } from "./protocollo.model";
 
 @Injectable()
 export class RestDataSource {
@@ -39,7 +40,7 @@ export class RestDataSource {
        return data;
     }
 
-    async getSubmissionInvoice(id: string, jwt: string): Promise<string>
+    async getSubmissionInvoice(id: string, jwt: string): Promise<ProtocolloResponse>
     {
       let httpOptions = {
          headers: new HttpHeaders({ 'Content-Type': 'application/json',
@@ -48,7 +49,7 @@ export class RestDataSource {
                                     'Access-Control-Allow-Headers':'Content-Type',
                                     'Authorization':'Bearer '+jwt})
        };
-       let data = await this.http.get<string>(this.baseUrl_submissionHelper+id,httpOptions).toPromise();
+       let data = await this.http.get<ProtocolloResponse>(this.baseUrl_submissionHelper+id,httpOptions).toPromise();
        return data;
     }
     

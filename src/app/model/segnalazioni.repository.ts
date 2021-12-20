@@ -4,6 +4,7 @@ import { Cig } from "./cig.model";
 import { JWT } from "./jwt.model";
 import { Regione } from "./localizzazione.model";
 import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
+import { ProtocolloResponse } from "./protocollo.model";
 import { RestDataSource } from "./rest.datasource";
 
 @Injectable()
@@ -33,7 +34,7 @@ export class SegnalazioniRepository {
         return this.datasource.getRegioneFromProvincia(provincia, jwt);
     }
 
-    getResponseWaitProtocollo(id: string, jwt: string) :Promise<string> {
+    getResponseWaitProtocollo(id: string, jwt: string) :Promise<ProtocolloResponse> {
         return this.datasource.getSubmissionInvoice(id,jwt);
     }
 

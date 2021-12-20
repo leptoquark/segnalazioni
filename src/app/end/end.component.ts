@@ -44,7 +44,7 @@ export class EndComponent  implements OnInit {
   }
 
   get prot(): string {
-    return this.sub.getProt();
+    return this.sub.prot.protocollo;
   }
 
 

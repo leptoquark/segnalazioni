@@ -459,7 +459,7 @@ export class FormComponent implements OnInit {
   async onSubmit(submission: any) {
     this.sub.setId(submission._id);
 
-    this.sub.setProt(await this.repository.getResponseWaitProtocollo(submission._id,this.jwtToken));
+    this.sub.prot = (await this.repository.getResponseWaitProtocollo(submission._id,this.jwtToken));
 
     this.router.navigate(['/end']);
   }
