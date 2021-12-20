@@ -21,13 +21,11 @@ export class EndComponent  implements OnInit {
   private jwtToken:string = "";
 
   async ngOnInit(): Promise<void> {
-    this.jwtToken = (await this.repository.authenticate()).token;
-    this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).protocollo);
-
-    console.log(this.sub.getProt());
 
     var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
-    formio.loadForm().then(function(form: any) {
+    formio.loadForm().then(async (form: any) => {
+      this.jwtToken = (await this.repository.authenticate()).token;
+      this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).protocollo);
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
         noDefaultSubmitButton: true,
