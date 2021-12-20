@@ -87,6 +87,13 @@ export class FormComponent implements OnInit {
   async formLoad(event: any): Promise<void> {
     this.jwtToken = (await this.repository.authenticate()).token;
 
+    event.data.cig_trovato=1;
+    this.refreshForm.emit({
+      form: this.myform,
+      submission: {
+        data: event.data
+      }
+    });
   }
   
   onError(error: any): void 
@@ -139,7 +146,7 @@ export class FormComponent implements OnInit {
       submissionAux.denominazione_sa='';
       submissionAux.regione_appalti='';
       submissionAux.comune_appalti='';
-      submissionAux.rup_='';
+      submissionAux.nome_rup_='';
       submissionAux.cognome_rup='';
       submissionAux.descrizione_intervento_segnalazione='';
       submissionAux.importo_contrattuale='';
@@ -290,11 +297,11 @@ export class FormComponent implements OnInit {
         
 
         submissionAux.sintesi_cig =  "<ul class='list-group list-group-flush'>"+
-        "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
-        "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
-        "<li class='list-group-item'>"+"<b>Oggetto della gara:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
-        "<li class='list-group-item'>"+"<b>Importo complessivo:</b> "+this.clean("euro "+response.bando.IMPORTO_COMPLESSIVO_GARA,'N.D.')+"</li>"+
-        "</ul>";
+          "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Oggetto della gara:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
+          "<li class='list-group-item'>"+"<b>Importo complessivo:</b> "+this.clean("euro "+response.bando.IMPORTO_COMPLESSIVO_GARA,'N.D.')+"</li>"+
+          "</ul>";
         
 
         submissionAux.codiceFiscale_sa=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
@@ -302,7 +309,7 @@ export class FormComponent implements OnInit {
         submissionAux.regione_appalti=this.titleCaseWord(response.stazione_appaltante.REGIONE);
         submissionAux.comune_appalti=this.titleCaseWord(response.stazione_appaltante.CITTA);
         submissionAux.provincia_appalti=this.titleCaseWord(responsePG.dati_identificativi.localizzazione.provincia.nome);
-        submissionAux.rup_=response.incaricati[0].NOME;
+        submissionAux.nome_rup=response.incaricati[0].NOME;
         submissionAux.cognome_rup=response.incaricati[0].COGNOME;
         submissionAux.descrizione_intervento_segnalazione=response.bando.OGGETTO_GARA;
         submissionAux.importo_contrattuale=response.bando.IMPORTO_COMPLESSIVO_GARA;
@@ -449,8 +456,11 @@ export class FormComponent implements OnInit {
     this.sub.setId(id);
   }
 
-  onSubmit(submission: any) {
+  async onSubmit(submission: any) {
     this.sub.setId(submission._id);
+
+    this.sub.setProt(await this.repository.getResponseWaitProtocollo(submission._id,this.jwtToken));
+
     this.router.navigate(['/end']);
   }
 }

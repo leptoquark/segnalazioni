@@ -33,6 +33,10 @@ export class SegnalazioniRepository {
         return this.datasource.getRegioneFromProvincia(provincia, jwt);
     }
 
+    getResponseWaitProtocollo(id: string, jwt: string) :Promise<string> {
+        return this.datasource.getSubmissionInvoice(id,jwt);
+    }
+
     authenticate():Promise<JWT> {
         return this.datasource.autheticate(EnvConfig.jwt_user, EnvConfig.jwt_password);
     }

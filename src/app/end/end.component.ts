@@ -43,6 +43,10 @@ export class EndComponent  implements OnInit {
     return this.sub.getId();
   }
 
+  get prot(): string {
+    return this.sub.getProt();
+  }
+
 
 
   refreshForm = new EventEmitter();

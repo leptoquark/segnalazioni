@@ -12,6 +12,7 @@ export class RestDataSource {
     private baseUrl_personaGiuridica: string;
     private baseUrl_personaGiuridicaLike: string;
     private baseUrl_regione: string;
+    private baseUrl_submissionHelper: string;
 
     private baseUrl_authenticate: string;
 
@@ -21,6 +22,7 @@ export class RestDataSource {
        this.baseUrl_personaGiuridica = EnvConfig.backendUrl+`/ws/personagiuridica/cf/?cf=`;
        this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
        this.baseUrl_regione = EnvConfig.backendUrl+`/regioneFromProvincia?provincia=`;
+       this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
@@ -34,6 +36,19 @@ export class RestDataSource {
                                     'Authorization':'Bearer '+jwt})
        };
        let data = await this.http.get<Cig>(this.baseUrl_appalti+cig,httpOptions).toPromise();
+       return data;
+    }
+
+    async getSubmissionInvoice(id: string, jwt: string): Promise<string>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Authorization':'Bearer '+jwt})
+       };
+       let data = await this.http.get<string>(this.baseUrl_submissionHelper+id,httpOptions).toPromise();
        return data;
     }
     
