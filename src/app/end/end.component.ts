@@ -6,6 +6,7 @@ import jspdf, { jsPDF } from 'jspdf';
 import { EnvConfig } from 'src/environments/environment';
 import { Submission } from '../model/submission.model';
 import { SegnalazioniRepository } from '../model/segnalazioni.repository';
+import { escapeSelector } from 'jquery';
 
 
 declare var require: any
@@ -20,29 +21,41 @@ export class EndComponent  implements OnInit {
 
   private jwtToken:string = "";
 
-  async ngOnInit(): Promise<void> {
+  ngOnInit(): void {
 
-    var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
-    formio.loadForm().then(async (form: any) => {
-      this.jwtToken = (await this.repository.authenticate()).token;
-      this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).protocollo);
-      form.display = 'form';
-      Formio.createForm(document.getElementById('formio-full'), form, {
-        noDefaultSubmitButton: true,
-        readOnly: true,
-        renderMode: 'flat',
-      }).then(function(instance) {
-        formio.loadSubmission().then(function(submission: any) {
-          instance.submission = submission;
+    if (this.sub.getId())
+    {
+      var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
+      formio.loadForm().then(function(form: any) {
+        form.display = 'form';
+        Formio.createForm(document.getElementById('formio-full'), form, {
+          noDefaultSubmitButton: true,
+          readOnly: true,
+          renderMode: 'flat',
+        }).then(function(instance) {
+          formio.loadSubmission().then(function(submission: any) {
+            instance.submission = submission;
+          });
         });
       });
-    });
-
+    } else
+    {
+      this.route.navigate(['/form']);
+    }
   }
 
 
   constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
+    this.getProtNum();
+
+  }
+
+  private async getProtNum(): Promise<void> {
+    
+    this.jwtToken = (await this.repository.authenticate()).token;
+    let protocolloWS = (await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)); 
+    this.sub.setProt("ANAC."+protocolloWS.data+"."+protocolloWS.numeroProtocollo);
 
   }
 
@@ -53,8 +66,6 @@ export class EndComponent  implements OnInit {
   get prot(): string {
     return this.sub.getProt();
   }
-
-
 
   refreshForm = new EventEmitter();
   form: any;

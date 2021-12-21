@@ -5,5 +5,5 @@ export class ProtocolloResponse {
     data: string = "";
     esito: string = "";
     messaggio: string = "";
-    protocollo: string = "";
+    numeroProtocollo: string = "";
 }

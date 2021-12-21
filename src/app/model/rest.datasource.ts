@@ -49,6 +49,7 @@ export class RestDataSource {
                                     'Access-Control-Allow-Headers':'Content-Type',
                                     'Authorization':'Bearer '+jwt})
        };
+       console.log("request: "+this.baseUrl_submissionHelper+id);
        let data = await this.http.get<ProtocolloResponse>(this.baseUrl_submissionHelper+id,httpOptions).toPromise();
        return data;
     }
