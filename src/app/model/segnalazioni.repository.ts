@@ -1,4 +1,5 @@
 import { Injectable } from "@angular/core";
+import { Observable } from "rxjs";
 import { EnvConfig } from "src/environments/environment";
 import { Cig } from "./cig.model";
 import { JWT } from "./jwt.model";
@@ -34,7 +35,7 @@ export class SegnalazioniRepository {
         return this.datasource.getRegioneFromProvincia(provincia, jwt);
     }
 
-    getResponseWaitProtocollo(id: string, jwt: string) :Promise<ProtocolloResponse> {
+    getResponseWaitProtocollo(id: string, jwt: string) : Promise<ProtocolloResponse> {
         return this.datasource.getSubmissionInvoice(id,jwt);
     }
 

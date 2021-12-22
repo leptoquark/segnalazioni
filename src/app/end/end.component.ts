@@ -6,7 +6,6 @@ import jspdf, { jsPDF } from 'jspdf';
 import { EnvConfig } from 'src/environments/environment';
 import { Submission } from '../model/submission.model';
 import { SegnalazioniRepository } from '../model/segnalazioni.repository';
-import { escapeSelector } from 'jquery';
 
 
 declare var require: any
@@ -23,16 +22,18 @@ export class EndComponent  implements OnInit {
 
   ngOnInit(): void {
 
-    if (this.sub.getId())
+   if (this.sub.getId())
     {
       var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
       formio.loadForm().then(function(form: any) {
         form.display = 'form';
+        $('[name="data[submit]"]').hide();
         Formio.createForm(document.getElementById('formio-full'), form, {
           noDefaultSubmitButton: true,
           readOnly: true,
           renderMode: 'flat',
         }).then(function(instance) {
+          ;
           formio.loadSubmission().then(function(submission: any) {
             instance.submission = submission;
           });
@@ -48,22 +49,20 @@ export class EndComponent  implements OnInit {
   constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
     this.getProtNum();
-
   }
 
   private async getProtNum(): Promise<void> {
-    
     this.jwtToken = (await this.repository.authenticate()).token;
-    let protocolloWS = (await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)); 
-    this.sub.setProt("ANAC."+protocolloWS.data+"."+protocolloWS.numeroProtocollo);
-
+    this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).numeroProtocollo);
   }
 
   get submission(): string {
     return this.sub.getId();
   }
 
-  get prot(): string {
+  prot(): string {
+    console.log("ID: "+this.sub.getId());
+    console.log("PROTOCOLLO: "+this.sub.getProt());
     return this.sub.getProt();
   }
 
@@ -110,7 +109,7 @@ export class EndComponent  implements OnInit {
     formio.loadForm().then(function(form: any) {
       form.display = 'form';
       Formio.createForm(document.getElementById('formio-full'), form, {
-        renderMode: 'form',
+        renderMode: 'flat',
         readOnly: false
       }).then(function(instance) {
         formio.loadSubmission().then(function(submission: any) {
