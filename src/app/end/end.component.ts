@@ -20,40 +20,39 @@ export class EndComponent  implements OnInit {
 
   private jwtToken:string = "";
 
-  ngOnInit(): void {
+  async ngOnInit(): Promise<void> {
+
+    this.sub.setId("61c3124edb59c20121da3bdf");
 
    if (this.sub.getId())
     {
+      this.jwtToken = (await this.repository.authenticate()).token;
+      this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).numeroProtocollo);
+
       var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
       formio.loadForm().then(function(form: any) {
         form.display = 'form';
-        $('[name="data[submit]"]').hide();
         Formio.createForm(document.getElementById('formio-full'), form, {
           noDefaultSubmitButton: true,
           readOnly: true,
-          renderMode: 'flat',
+          renderMode: 'html',
+          flatten: true,
         }).then(function(instance) {
-          ;
-          formio.loadSubmission().then(function(submission: any) {
+            formio.loadSubmission().then(function(submission: any) {
             instance.submission = submission;
           });
-        });
+        })
       });
     } else
     {
       this.route.navigate(['/form']);
     }
+    $('[name="data[submit]"]').hide();
   }
 
 
   constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
-    this.getProtNum();
-  }
-
-  private async getProtNum(): Promise<void> {
-    this.jwtToken = (await this.repository.authenticate()).token;
-    this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).numeroProtocollo);
   }
 
   get submission(): string {
