@@ -22,8 +22,6 @@ export class EndComponent  implements OnInit {
 
   async ngOnInit(): Promise<void> {
 
-    this.sub.setId("61c3124edb59c20121da3bdf");
-
    if (this.sub.getId())
     {
       this.jwtToken = (await this.repository.authenticate()).token;
@@ -47,7 +45,6 @@ export class EndComponent  implements OnInit {
     {
       this.route.navigate(['/form']);
     }
-    $('[name="data[submit]"]').hide();
   }
 
 
@@ -60,8 +57,6 @@ export class EndComponent  implements OnInit {
   }
 
   prot(): string {
-    console.log("ID: "+this.sub.getId());
-    console.log("PROTOCOLLO: "+this.sub.getProt());
     return this.sub.getProt();
   }
 
