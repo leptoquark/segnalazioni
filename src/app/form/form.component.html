@@ -1,11 +1,11 @@
  
  <div>
-    <formio #formEl [src]="src"
+    <formio [src]="src"
       [renderOptions]="renderOptions"
       [options]="options"
       (submit)="onSubmit($event)"
       (change)="onChange($event)"
-      (error)="onError($event)"
+      (invalid)="onSubmit($event)"
       (customEvent)="customEvent($event)"
       [form]="myform"
       [refresh]="refreshForm"

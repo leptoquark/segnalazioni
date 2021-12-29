@@ -12,8 +12,6 @@ import { AnyForJSON } from 'formiojs';
 })
 
 export class FormComponent implements OnInit {
-  @ViewChild('formEl')
-  formEl!: FormioComponent[];
   myform: any;
 
   refreshForm = new EventEmitter();
@@ -25,8 +23,8 @@ export class FormComponent implements OnInit {
   options: Object = {
     submitMessage: "",
     disableAlerts: true,
-    noAlerts: true,
-    saveDraft: true ,
+    noAlerts: false,
+    saveDraft: true,
   };
 
   src: string = EnvConfig.appUrl+"/"+EnvConfig.formId;
@@ -96,14 +94,13 @@ export class FormComponent implements OnInit {
     });
   }
   
-  onError(error: any): void 
-  {
-    JSON.stringify(error);
-    this.onTop;
-  }
-
   onTop(): void {
     window.scrollTo(0,0);
+  }
+
+  invalid(event: any)
+  {
+    console.log("invalido");
   }
 
   render(event: any) {
@@ -333,9 +330,10 @@ export class FormComponent implements OnInit {
       return val;
   }
 
-  async onChange(event: any) { 
+  async onChange(event: any) {
 
 
+    
     if (event.changed && event.changed.component.key === 'codiceIdentificativoGaraCig' && event.changed.value)  {
      
       if (event.changed.value.length < 10 || event.changed.value.length > 10)

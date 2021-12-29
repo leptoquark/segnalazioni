@@ -57,7 +57,9 @@ export class EndComponent  implements OnInit {
   }
 
   prot(): string {
-    return this.sub.getProt();
+    if (this.sub.getProt().length>=0)
+      return "Protocollo in elaborazione..."
+    else return "Il numero di protocollo assegnato è: "+this.sub.getProt();
   }
 
   refreshForm = new EventEmitter();
