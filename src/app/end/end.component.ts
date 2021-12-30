@@ -50,6 +50,7 @@ export class EndComponent  implements OnInit {
 
   constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
+    
   }
 
   get submission(): string {
