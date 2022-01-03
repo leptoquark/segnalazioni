@@ -87,7 +87,7 @@ export class FormComponent implements OnInit {
     let health = (await this.repository.health());
 
     if (health.status === "KO")
-      alert(health.message);
+      alert("ATTENZIONE, alcuni servizi di autocompletamento potrebbero non essere disponibili\n"+health.message);
 
     this.jwtToken = (await this.repository.authenticate()).token;
 
