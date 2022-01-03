@@ -11,7 +11,7 @@
   </div>
 
   <div>
-    <h3 class="display-6">{{prot()}}</h3>
+    <h3 class="display-6">Il numero di protocollo della segnalazione è: {{prot()}}</h3>
   </div>
   <!--div id="content">
     <formio id="formio-full"></formio>
@@ -21,4 +21,14 @@
   </div>
 </div>
 
-<ng-template #other_content>In attesa di assegnazione del cig...</ng-template>
+<ng-template #other_content>
+  <div>
+    <h1></h1>
+    <p>
+      <span style="font-size:18px;">La segnalazione è stata sottomessa con successo</span>
+    </p>
+    <p>
+      <span style="font-size:18px;">In attesa di assegnazione del protocollo...</span>
+    </p>
+  </div>
+</ng-template>

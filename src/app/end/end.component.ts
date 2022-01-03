@@ -50,7 +50,7 @@ export class EndComponent  implements OnInit {
 
   constructor(private route:Router, private sub: Submission, private repository: SegnalazioniRepository)
   {
-    
+
   }
 
   get submission(): string {
@@ -58,7 +58,7 @@ export class EndComponent  implements OnInit {
   }
 
   prot(): string {
-    return "Il numero di protocollo assegnato è: "+this.sub.getProt();
+    return this.sub.getProt();
   }
 
   refreshForm = new EventEmitter();
