@@ -1,5 +1,8 @@
-<div *ngIf="healthStatus.status==='KO'" class="alert alert-danger" role="alert">
-  Servizi per l'autocompletamento non disponibili: {{healthStatus.message}}</div>
+<div class="py-3">
+    <div *ngIf="healthStatus.status==='KO'" class="alert alert-danger" role="alert">
+      Servizi per l'autocompletamento non disponibili: {{healthStatus.message}}</div>
+</div>
+
  <div>
     <formio [src]="src"
       [renderOptions]="renderOptions"

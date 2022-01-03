@@ -1,3 +1,5 @@
+ 
+<div *ngIf="prot()!==''">
   <div>
     <h1></h1>
     <p>
@@ -11,9 +13,10 @@
   <div>
     <h3 class="display-6">{{prot()}}</h3>
   </div>
-  <div id="content">
+  <!--div id="content">
     <formio id="formio-full"></formio>
-  </div>
+  </div-->
   <div> 
     <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Scarica Documento in PDF</button>
   </div>
+</div>
