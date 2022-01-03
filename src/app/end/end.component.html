@@ -1,5 +1,5 @@
  
-<div *ngIf="prot()!==''">
+<div *ngIf="prot()!==''; else other_content">
   <div>
     <h1></h1>
     <p>
@@ -20,3 +20,5 @@
     <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Scarica Documento in PDF</button>
   </div>
 </div>
+
+<ng-template #other_content>In attesa di assegnazione del cig...</ng-template>
