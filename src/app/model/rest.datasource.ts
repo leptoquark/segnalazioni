@@ -6,6 +6,7 @@ import { JWT } from "./jwt.model";
 import { EnvConfig } from "src/environments/environment";
 import { Regione } from "./localizzazione.model";
 import { ProtocolloResponse } from "./protocollo.model";
+import { Health } from "./health.model";
 
 @Injectable()
 export class RestDataSource {
@@ -14,6 +15,7 @@ export class RestDataSource {
     private baseUrl_personaGiuridicaLike: string;
     private baseUrl_regione: string;
     private baseUrl_submissionHelper: string;
+    private baseUrl_health: string;
 
     private baseUrl_authenticate: string;
 
@@ -24,6 +26,9 @@ export class RestDataSource {
        this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
        this.baseUrl_regione = EnvConfig.backendUrl+`/regioneFromProvincia?provincia=`;
        this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
+       this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
+       
+       this.baseUrl_health = EnvConfig.backendUrl+`/health`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
     }
 
@@ -92,6 +97,19 @@ export class RestDataSource {
        };
 
        let data = await this.http.get<Regione>(this.baseUrl_regione+provincia,httpOptions).toPromise();
+       return data;
+    }
+
+    async getHealthService(): Promise<Health>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type'})
+       };
+
+       let data = await this.http.get<Health>(this.baseUrl_health,httpOptions).toPromise();
        return data;
     }
 

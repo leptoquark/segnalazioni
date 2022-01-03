@@ -2,6 +2,7 @@ import { Injectable } from "@angular/core";
 import { Observable } from "rxjs";
 import { EnvConfig } from "src/environments/environment";
 import { Cig } from "./cig.model";
+import { Health } from "./health.model";
 import { JWT } from "./jwt.model";
 import { Regione } from "./localizzazione.model";
 import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
@@ -37,6 +38,10 @@ export class SegnalazioniRepository {
 
     getResponseWaitProtocollo(id: string, jwt: string) : Promise<ProtocolloResponse> {
         return this.datasource.getSubmissionInvoice(id,jwt);
+    }
+
+    health():Promise<Health> {
+        return this.datasource.getHealthService();
     }
 
     authenticate():Promise<JWT> {
