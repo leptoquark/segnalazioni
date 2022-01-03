@@ -5,6 +5,7 @@ import { Submission } from '../model/submission.model';
 import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
 import { AnyForJSON } from 'formiojs';
+import { Health } from '../model/health.model';
 
 @Component({
   templateUrl: './form.component.html',
@@ -23,11 +24,12 @@ export class FormComponent implements OnInit {
   options: Object = {
     submitMessage: "",
     disableAlerts: true,
-    noAlerts: false,
+    noAlerts: true,
     saveDraft: true,
   };
 
   src: string = EnvConfig.appUrl+"/"+EnvConfig.formId;
+  health: Health = new Health;
   
   renderOptions: Object = {
     buttonSettings: {
@@ -82,12 +84,17 @@ export class FormComponent implements OnInit {
 
   }
 
+  get healthStatus()
+  {
+    return this.health;
+  }
+
   async formLoad(event: any): Promise<void> {
 
-    let health = (await this.repository.health());
+    this.health = (await this.repository.health());
 
-    if (health.status === "KO")
-      alert("ATTENZIONE, alcuni servizi di autocompletamento potrebbero non essere disponibili\n"+health.message);
+    if (this.health.status === "KO")
+      alert("ATTENZIONE, alcuni servizi di autocompletamento potrebbero non essere disponibili\n"+this.health.message);
 
     this.jwtToken = (await this.repository.authenticate()).token;
 
