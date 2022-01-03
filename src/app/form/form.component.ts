@@ -84,9 +84,10 @@ export class FormComponent implements OnInit {
 
   async formLoad(event: any): Promise<void> {
 
-    if ((await this.repository.health()).status === "KO")
-      alert("Alcuni componenti sono offline");
+    let health = (await this.repository.health());
 
+    if (health.status === "KO")
+      alert(health.message);
 
     this.jwtToken = (await this.repository.authenticate()).token;
 
