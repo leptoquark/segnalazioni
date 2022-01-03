@@ -72,6 +72,11 @@ export class EndComponent  implements OnInit {
                         "ricevuta_"+this.sub.getId()+".pdf");
   }
 
+  getPfdLink()
+  {
+    return (EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId());
+  }
+
   /*public downloadAsPDF()  
   {
     var data = document.getElementById('content');  

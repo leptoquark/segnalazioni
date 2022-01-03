@@ -16,6 +16,12 @@
   <!--div id="content">
     <formio id="formio-full"></formio>
   </div-->
+
+  <div>
+    <object data="test.pdf" type="application/pdf">
+        alt : <a href="getPdfLink()">report</a>
+    </object>
+  </div>
   <div> 
     <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Scarica Documento in PDF</button>
   </div>
