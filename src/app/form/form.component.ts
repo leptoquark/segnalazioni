@@ -14,8 +14,6 @@ import { Health } from '../model/health.model';
 
 export class FormComponent implements OnInit {
 
-  pdfSource = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
-
   myform: any;
 
   refreshForm = new EventEmitter();
@@ -473,6 +471,7 @@ export class FormComponent implements OnInit {
   async onSubmit(submission: any) {
  
       this.sub.setId(submission._id);
+      this.sub.setSync(this.health.protocollo);
 
       this.router.navigate(['/end']);
     

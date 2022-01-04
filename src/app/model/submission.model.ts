@@ -6,6 +6,7 @@ export class Submission
 {
     public id: string = "";
     public prot: string = "";
+    public sync: boolean = false;
 
     setId(id: string){
         this.id=id;
@@ -20,5 +21,14 @@ export class Submission
     }
     getProt(){
         return this.prot;
+    }
+
+    setSync(sync: boolean)
+    {
+        this.sync = sync;
+    }
+
+    getSync(){
+        return this.sync;
     }
 }

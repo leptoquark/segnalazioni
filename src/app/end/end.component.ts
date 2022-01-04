@@ -25,7 +25,12 @@ export class EndComponent  implements OnInit {
    if (this.sub.getId())
     {
       this.jwtToken = (await this.repository.authenticate()).token;
-      this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).numeroProtocollo);
+
+      // Inserire la logica di sottomissione asincrona
+      if (this.sub.getSync())
+        this.sub.setProt((await this.repository.getResponseWaitProtocollo(this.sub.getId(),this.jwtToken)).numeroProtocollo);
+      else
+        this.sub.setProt("DA ASSEGNARE");
 
       var formio = new Formio(EnvConfig.appUrl+'/'+EnvConfig.formId+'/submission/'+this.sub.getId());
       formio.loadForm().then(function(form: any) {

@@ -26,7 +26,6 @@ export class RestDataSource {
        this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
        this.baseUrl_regione = EnvConfig.backendUrl+`/regioneFromProvincia?provincia=`;
        this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
-       this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
        
        this.baseUrl_health = EnvConfig.backendUrl+`/health`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;

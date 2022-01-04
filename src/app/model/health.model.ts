@@ -4,4 +4,5 @@ import { Injectable } from "@angular/core";
 export class Health {
     status: string = "";
     message: string = "";
+    protocollo: boolean = true;
 }
