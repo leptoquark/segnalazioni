@@ -1,37 +1,28 @@
- 
-<div *ngIf="prot()!==''; else other_content">
-  <div>
-    <h1></h1>
-    <p>
-      <span style="font-size:18px;">La segnalazione è stata sottomessa con successo</span>
-    </p>
-    <p>
-      <span style="font-size:18px;">A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione</span>
-    </p>
-  </div>
+ <div *ngIf="prot()!==''; else other_content" class="container py-3">
+      <p>
+        <span style="font-size:18px;">La segnalazione è stata sottomessa con successo</span>
+      </p>
+      <p>
+        <span style="font-size:18px;">A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione</span>
+      </p>
 
-  <div>
-    <h3 class="display-6">Il numero di protocollo della segnalazione è: {{prot()}}</h3>
-  </div>
-  <!--div id="content">
-    <formio id="formio-full"></formio>
-  </div-->
+      <div>
+        <h3 class="display-6">Protocollo: {{prot()}}</h3>
+      </div>
 
-  <div>
-    <object data="test.pdf" type="application/pdf">
-        alt : <a href="getPdfLink()">report</a>
-    </object>
-  </div>
-  <div> 
-    <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Scarica Documento in PDF</button>
-  </div>
+      <div id="content">
+        <formio id="formio-full"></formio>
+      </div>
+
+      <div> 
+        <button type="button" (click)="downloadAsPDF()" class="btn btn-primary btn-lg">Scarica Documento in PDF</button>
+      </div>
 </div>
 
 <ng-template #other_content>
-  <div>
-    <h1></h1>
+  <div class="py-3">
     <p>
-      <span style="font-size:18px;">La segnalazione è stata sottomessa con successo</span>
+      <span style="font-size:18px;">La segnalazione è stata inviata con successo</span>
     </p>
     <p>
       <span style="font-size:18px;">In attesa di assegnazione del protocollo...</span>

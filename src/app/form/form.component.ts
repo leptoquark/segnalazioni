@@ -13,6 +13,9 @@ import { Health } from '../model/health.model';
 })
 
 export class FormComponent implements OnInit {
+
+  pdfSource = "https://vadimdez.github.io/ng2-pdf-viewer/assets/pdf-test.pdf";
+
   myform: any;
 
   refreshForm = new EventEmitter();
@@ -30,7 +33,7 @@ export class FormComponent implements OnInit {
 
   src: string = EnvConfig.appUrl+"/"+EnvConfig.formId;
   health: Health = new Health;
-  
+ 
   renderOptions: Object = {
     buttonSettings: {
       showCancel: false

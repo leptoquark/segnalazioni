@@ -1,8 +1,10 @@
 import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
 import { FormioAppConfig, FormioModule } from '@formio/angular';
+import { PdfViewerModule } from 'ng2-pdf-viewer';
 import { AppConfig } from 'src/environments/environment';
 
 import { AppRoutingModule } from './app-routing.module';
@@ -23,6 +25,7 @@ import { ModelModule } from './model/model.module';
     FormioModule,
     CommonModule,
     ModelModule,
+    FormsModule,
     RouterModule.forRoot([
       {path: "end", component: EndComponent},
       {path: "form", component: FormComponent},

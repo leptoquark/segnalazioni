@@ -31,9 +31,13 @@ export class EndComponent  implements OnInit {
       formio.loadForm().then(function(form: any) {
         form.display = 'form';
         Formio.createForm(document.getElementById('formio-full'), form, {
+          buttonSettings: {
+            showCancel: false,
+            showSubmit: false
+          },
           noDefaultSubmitButton: true,
           readOnly: true,
-          renderMode: 'html',
+         // renderMode: 'html',
           flatten: true,
         }).then(function(instance) {
             formio.loadSubmission().then(function(submission: any) {
@@ -72,9 +76,14 @@ export class EndComponent  implements OnInit {
                         "ricevuta_"+this.sub.getId()+".pdf");
   }
 
-  getPfdLink()
+  public getPdfLink()
   {
-    return (EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId());
+    if (this.sub.getId())
+    {
+      console.log("url per pdf: "+EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId())
+      return (EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId());
+    }
+    return "";
   }
 
   /*public downloadAsPDF()  
