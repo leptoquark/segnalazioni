@@ -469,6 +469,11 @@ export class FormComponent implements OnInit {
   }
 
   async onSubmit(submission: any) {
+
+    console.log("PROTCOLLO-SYNC: "+this.health.protocollo);
+    console.log("STATO-HEALTH: "+this.health.status);
+    console.log("MESSAGGIO-HEALTH: "+this.health.message);
+
  
       this.sub.setId(submission._id);
       this.sub.setSync(this.health.protocollo);
