@@ -24,10 +24,6 @@ export class EndComponent  implements OnInit {
 
    if (this.sub.getId())
     {
-      console.log("ID: "+this.sub.getId());
-      console.log("Protocollo: "+this.sub.getProt());
-      console.log("SYNC: "+this.sub.getSync());
-
       this.jwtToken = (await this.repository.authenticate()).token;
 
       // Inserire la logica di sottomissione asincrona

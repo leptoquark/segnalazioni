@@ -1,5 +1,4 @@
 import { Injectable } from "@angular/core";
-import { ProtocolloResponse } from "./protocollo.model";
 
 @Injectable()
 export class Submission
