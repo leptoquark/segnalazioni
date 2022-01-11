@@ -2,7 +2,6 @@ import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular
 import { Router } from '@angular/router';
 import { SegnalazioniRepository } from '../model/segnalazioni.repository';
 import { Submission } from '../model/submission.model';
-import { FormioComponent } from 'angular-formio';
 import { EnvConfig } from "src/environments/environment";
 import { AnyForJSON } from 'formiojs';
 import { Health } from '../model/health.model';
