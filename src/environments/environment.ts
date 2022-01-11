@@ -13,7 +13,6 @@ export const AppConfig: FormioAppConfig = {
 export const EnvConfig: any = {
   appUrl: 'http://nodejs-mongodb-formio-segnalazioni-ril.apps.ocp.premaster.local',
   backendUrl: 'http://segnalazioni-backend-gitlab-segnalazioni-ril.apps.ocp.premaster.local',
-  //backendUrl: 'http://localhost:8080',
   formId: 'segnalazione-dev',
   jwt_user: 'segnalazioni',
   jwt_password: 'segnalazionipasswordanac'
