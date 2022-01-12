@@ -81,6 +81,7 @@ export class RestDataSource {
                                     'Authorization':'Bearer '+jwt})
        };
 
+
        let data = await this.http.get<PersoneGiuridiche>(this.baseUrl_personaGiuridicaLike+saLike,httpOptions).toPromise();
        return data;
     }
@@ -107,6 +108,8 @@ export class RestDataSource {
                                     'Access-Control-Allow-Methods':'GET',
                                     'Access-Control-Allow-Headers':'Content-Type'})
        };
+
+       console.log("CHIAMATA: "+this.baseUrl_health);
 
        let data = await this.http.get<Health>(this.baseUrl_health,httpOptions).toPromise();
        return data;
