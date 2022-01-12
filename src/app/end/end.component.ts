@@ -44,9 +44,12 @@ export class EndComponent  implements OnInit {
           readOnly: true,
          // renderMode: 'html',
           flatten: true,
+          
         }).then(function(instance) {
             formio.loadSubmission().then(function(submission: any) {
             instance.submission = submission;
+            instance.getComponent('submit').component.hidden = true;
+            instance.getComponent('introduzione').component.hidden = true;
           });
         })
       });
