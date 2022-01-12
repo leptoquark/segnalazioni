@@ -84,16 +84,6 @@ export class EndComponent  implements OnInit {
                         "ricevuta_"+this.sub.getId()+".pdf");
   }
 
-  public getPdfLink()
-  {
-    if (this.sub.getId())
-    {
-      console.log("url per pdf: "+EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId())
-      return (EnvConfig.backendUrl+'/ws/report?id='+this.sub.getId());
-    }
-    return "";
-  }
-
   /*public downloadAsPDF()  
   {
     var data = document.getElementById('content');  
