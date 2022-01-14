@@ -89,7 +89,7 @@ export class FormComponent implements OnInit {
     return this.health;
   }
 
-  
+
   async formLoad(event: any): Promise<void> {
 
     this.health = (await this.repository.health());
@@ -254,12 +254,14 @@ export class FormComponent implements OnInit {
 
       if (event.type === 'conferma_selezione_amministrazione')
       {
+        console.log("conferma selezione amministrazione");
         submissionAux.summary_denominazione2 =
           submissionAux.summary_denominazione2.split('list-group-item').join('list-group-item list-group-item-primary');
         submissionAux.cf_amministrazione2 = "";
       }
       else 
       {
+        console.log("conferma selezione cf");
         submissionAux.summary_cf2 =
           submissionAux.summary_cf2.split('list-group-item').join('list-group-item list-group-item-primary');
         submissionAux.denominazione_amministrazione2 = "";
@@ -287,8 +289,6 @@ export class FormComponent implements OnInit {
           data: submissionAux
         }
       });
-      
-     
 
      if (response.codice_risposta==='NOKCN' || response.codice_risposta==='' || response==null)
         submissionAux.cig_trovato=1;
@@ -305,25 +305,38 @@ export class FormComponent implements OnInit {
           aux = aux + "</li>"+data.codifica+"</li>";
         }
         aux = aux + "</ul>";
-        
-
+      
         submissionAux.sintesi_cig =  "<ul class='list-group list-group-flush'>"+
           "<li class='list-group-item'>"+"<b>Stazione Appaltante</b> "+this.clean(response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE,'N.D.')+"</li>"+
           "<li class='list-group-item'>"+"<b>Localizzazione:</b> "+this.clean(response.stazione_appaltante.CITTA+' ('+response.stazione_appaltante.REGIONE+')','N.D.')+"</li>"+
           "<li class='list-group-item'>"+"<b>Oggetto della gara:</b> "+this.clean(response.bando.OGGETTO_GARA,'N.D.')+"</li>"+
           "<li class='list-group-item'>"+"<b>Importo complessivo:</b> "+this.clean("euro "+response.bando.IMPORTO_COMPLESSIVO_GARA,'N.D.')+"</li>"+
-          "</ul>";
-        
+          "</ul>";     
 
+        // i campi della stazione appaltante non devono essere modificabili
         submissionAux.codiceFiscale_sa=response.stazione_appaltante.CF_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.denominazione_sa=response.stazione_appaltante.DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE;
         submissionAux.regione_appalti=this.titleCaseWord(response.stazione_appaltante.REGIONE);
         submissionAux.comune_appalti=this.titleCaseWord(response.stazione_appaltante.CITTA);
         submissionAux.provincia_appalti=this.titleCaseWord(responsePG.dati_identificativi.localizzazione.provincia.nome);
+
         submissionAux.nome_rup=response.incaricati[0].NOME;
         submissionAux.cognome_rup=response.incaricati[0].COGNOME;
-        submissionAux.descrizione_intervento_segnalazione=response.bando.OGGETTO_GARA;
-        submissionAux.importo_contrattuale=response.bando.IMPORTO_COMPLESSIVO_GARA;
+        submissionAux.oggettoContratto_sa=response.bando.OGGETTO_GARA;
+        submissionAux.importo_base_asta=response.bando.IMPORTO_COMPLESSIVO_GARA; // potrebbe essere invece 'response.bando.IMPORTO_LOTTO'
+
+        let procedura_affidamento = 
+            await this.repository.getResponseWaitContraente(response.bando.TIPO_SCELTA_CONTRAENTE,this.jwtToken)
+        if (procedura_affidamento)
+          submissionAux.procedura_affidamento=procedura_affidamento
+
+        let modalita_realizzazione =
+            await this.repository.getResponseWaitAmbito(response.bando.TIPO_SCELTA_CONTRAENTE,response.bando.OGGETTO_PRINCIPALE_CONTRATTO,this.jwtToken)
+        if (modalita_realizzazione)
+          submissionAux.procedura_affidamento=procedura_affidamento
+
+        if (response.bando.MOTIVO_ESCLUSIONE.includes("SECRETATI"))
+          submissionAux.secretato = 'si';
       }
     }
 
@@ -396,6 +409,7 @@ export class FormComponent implements OnInit {
     }
 
     if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
+
       
       this.tmpPG = event.changed.value;
 
@@ -419,6 +433,7 @@ export class FormComponent implements OnInit {
     }
 
     if (event.changed && event.changed.component.key === 'selezione_ente2' && event.changed.value)  {
+
       
       this.tmpPG = event.changed.value;
 
@@ -470,11 +485,6 @@ export class FormComponent implements OnInit {
 
   async onSubmit(submission: any) {
 
-    console.log("PROTCOLLO-SYNC: "+this.health.protocollo);
-    console.log("STATO-HEALTH: "+this.health.status);
-    console.log("MESSAGGIO-HEALTH: "+this.health.message);
-
- 
       this.sub.setId(submission._id);
       this.sub.setSync(this.health.protocollo);
 

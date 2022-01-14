@@ -7,6 +7,7 @@ import { EnvConfig } from "src/environments/environment";
 import { Regione } from "./localizzazione.model";
 import { ProtocolloResponse } from "./protocollo.model";
 import { Health } from "./health.model";
+import { TranscodeResponse } from "./transocode.model";
 
 @Injectable()
 export class RestDataSource {
@@ -15,6 +16,9 @@ export class RestDataSource {
     private baseUrl_personaGiuridicaLike: string;
     private baseUrl_regione: string;
     private baseUrl_submissionHelper: string;
+    private baseUrl_ambito: string;
+    private baseUrl_contraente: string;
+
     private baseUrl_health: string;
 
     private baseUrl_authenticate: string;
@@ -26,6 +30,8 @@ export class RestDataSource {
        this.baseUrl_personaGiuridicaLike = EnvConfig.backendUrl+`/ws/personagiuridica/denominazione/?denominazioneLike=`;
        this.baseUrl_regione = EnvConfig.backendUrl+`/regioneFromProvincia?provincia=`;
        this.baseUrl_submissionHelper = EnvConfig.backendUrl+`/ws/protocollo?submissionId=`;
+       this.baseUrl_ambito = EnvConfig.backendUrl+`/ws/transcode-ambito?code=`;
+       this.baseUrl_contraente = EnvConfig.backendUrl+`/ws/transcode-contraente?code=`;
        
        this.baseUrl_health = EnvConfig.backendUrl+`/health`;
        this.baseUrl_authenticate = EnvConfig.backendUrl+`/authenticate`;
@@ -41,6 +47,32 @@ export class RestDataSource {
                                     'Authorization':'Bearer '+jwt})
        };
        let data = await this.http.get<Cig>(this.baseUrl_appalti+cig,httpOptions).toPromise();
+       return data;
+    }
+
+    async getAmbito(code: string, oggettoPrincipaleContratto: string, jwt: string): Promise<TranscodeResponse>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Authorization':'Bearer '+jwt})
+       };
+       let data = await this.http.get<TranscodeResponse>(this.baseUrl_ambito+code+"&contratto="+oggettoPrincipaleContratto,httpOptions).toPromise();
+       return data;
+    }
+
+    async getContraente(code: string, jwt: string): Promise<TranscodeResponse>
+    {
+      let httpOptions = {
+         headers: new HttpHeaders({ 'Content-Type': 'application/json',
+                                    'Access-Control-Allow-Origin':'*',
+                                    'Access-Control-Allow-Methods':'GET',
+                                    'Access-Control-Allow-Headers':'Content-Type',
+                                    'Authorization':'Bearer '+jwt})
+       };
+       let data = await this.http.get<TranscodeResponse>(this.baseUrl_contraente+code,httpOptions).toPromise();
        return data;
     }
 

@@ -8,6 +8,7 @@ import { Regione } from "./localizzazione.model";
 import { PersonaGiuridica, PersoneGiuridiche } from "./persona-giuridica.model";
 import { ProtocolloResponse } from "./protocollo.model";
 import { RestDataSource } from "./rest.datasource";
+import { TranscodeResponse } from "./transocode.model";
 
 @Injectable()
 export class SegnalazioniRepository {
@@ -38,6 +39,14 @@ export class SegnalazioniRepository {
 
     getResponseWaitProtocollo(id: string, jwt: string) : Promise<ProtocolloResponse> {
         return this.datasource.getSubmissionInvoice(id,jwt);
+    }
+
+    getResponseWaitAmbito(code: string, oggetto: string, jwt: string) : Promise<TranscodeResponse> {
+        return this.datasource.getAmbito(code,oggetto,jwt);
+    }
+
+    getResponseWaitContraente(code: string, jwt: string) : Promise<TranscodeResponse> {
+        return this.datasource.getContraente(code,jwt);
     }
 
     health():Promise<Health> {

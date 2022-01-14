@@ -1,6 +1,12 @@
-pdf-viewer {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    filter: drop-shadow(5px 5px 5px #222222);
-  }
+body {
+  font-family: 'Titillium Web';font-size: 22px;
+}
+
+.tooltip-inner {
+  max-width: 200px;
+  padding: 0.25rem 0.5rem;
+  color: #fff;
+  text-align: left;
+  background-color: #000;
+  border-radius: 0.25rem;
+}
