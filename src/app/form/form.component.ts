@@ -325,15 +325,26 @@ export class FormComponent implements OnInit {
         submissionAux.oggettoContratto_sa=response.bando.OGGETTO_GARA;
         submissionAux.importo_base_asta=response.bando.IMPORTO_COMPLESSIVO_GARA; // potrebbe essere invece 'response.bando.IMPORTO_LOTTO'
 
-        let procedura_affidamento = 
-            await this.repository.getResponseWaitContraente(response.bando.TIPO_SCELTA_CONTRAENTE,this.jwtToken)
-        if (procedura_affidamento)
-          submissionAux.procedura_affidamento=procedura_affidamento
+        if (response.bando.TIPO_SCELTA_CONTRAENTE)
+        {
+          let procedura_affidamento = 
+              await this.repository.getResponseWaitContraente(
+                response.bando.TIPO_SCELTA_CONTRAENTE,
+                this.jwtToken)
+          if (procedura_affidamento)
+            submissionAux.procedura_affidamento=procedura_affidamento
+        }
 
-        let modalita_realizzazione =
-            await this.repository.getResponseWaitAmbito(response.bando.TIPO_SCELTA_CONTRAENTE,response.bando.OGGETTO_PRINCIPALE_CONTRATTO,this.jwtToken)
-        if (modalita_realizzazione)
-          submissionAux.procedura_affidamento=procedura_affidamento
+        if (response.bando.COD_MODALITA_REALIZZAZIONE)
+        {
+          let modalita_realizzazione =
+              await this.repository.getResponseWaitAmbito(
+                response.bando.COD_MODALITA_REALIZZAZIONE,
+                response.bando.OGGETTO_PRINCIPALE_CONTRATTO,
+                this.jwtToken)
+          if (modalita_realizzazione)
+            submissionAux.procedura_affidamento=modalita_realizzazione
+        }
 
         if (response.bando.MOTIVO_ESCLUSIONE.includes("SECRETATI"))
           submissionAux.secretato = 'si';
