@@ -368,12 +368,8 @@ export class FormComponent implements OnInit {
       return val;
   }
 
-  async onChange(event: any) {
-
-
-    
-    if (event.changed && event.changed.component.key === 'codiceIdentificativoGaraCig' && event.changed.value)  {
-     
+  async onChange(event: any) {    
+    if (event.changed && event.changed.component.key === 'codiceIdentificativoGaraCig' && event.changed.value)  {    
       if (event.changed.value.length < 10 || event.changed.value.length > 10)
       {
         event.data.query_cig_aggiuntivo = 0;
@@ -388,13 +384,10 @@ export class FormComponent implements OnInit {
       else if (event.changed.value.length === 10)
 
        {
-
         event.data.query_cig_aggiuntivo = 0;
-
 
         let response = (await this.repository.getResponseWaitCig(event.changed.value,this.jwtToken))       
         let response_aux : string = "<b>CIG: "+event.changed.value+"<b> - non presente in banca dati</b>";
-
 
         if (response.codice_risposta!=='NOKCN' && response.codice_risposta!=='' && response!=null)
         {
@@ -421,7 +414,6 @@ export class FormComponent implements OnInit {
 
     if (event.changed && event.changed.component.key === 'selezione_ente' && event.changed.value)  {
 
-      
       this.tmpPG = event.changed.value;
 
       let auxval = "<ul class='list-group list-group-flush'>"+
