@@ -332,7 +332,7 @@ export class FormComponent implements OnInit {
                 response.bando.TIPO_SCELTA_CONTRAENTE,
                 this.jwtToken)
           if (procedura_affidamento)
-            submissionAux.procedura_affidamento=procedura_affidamento
+            submissionAux.procedura_affidamento=procedura_affidamento.transcode
         }
 
         if (response.bando.COD_MODALITA_REALIZZAZIONE)
@@ -343,7 +343,8 @@ export class FormComponent implements OnInit {
                 response.bando.OGGETTO_PRINCIPALE_CONTRATTO,
                 this.jwtToken)
           if (modalita_realizzazione)
-            submissionAux.procedura_affidamento=modalita_realizzazione
+            submissionAux.ambitodellintervento=modalita_realizzazione.transcode
+
         }
 
         if (response.bando.MOTIVO_ESCLUSIONE.includes("SECRETATI"))
