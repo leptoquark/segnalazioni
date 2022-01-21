@@ -49,8 +49,8 @@ export class EndComponent  implements OnInit {
             instance.getComponent('submit').component.hidden = true;
             instance.getComponent('introduzione').component.hidden = true;
             instance.getComponent('sintesi_cig').component.hidden = true;
-            instance.getComponent('cig_buttons').component.hidden = true;
             instance.getComponent('bottoni_ricerca_cig').component.hidden = true;
+            instance.getComponent('valida_cig').component.hidden = true;
           });
         })
       });
