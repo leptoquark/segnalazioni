@@ -20,15 +20,13 @@
 </div>
 
 <ng-template #other_content>
-  <div class="py-3">
-    <p>
-      <span style="font-size:18px;">La segnalazione è stata inviata con successo.</span>
-    </p>
-    <p>
-      <span style="font-size:18px;">ID della sottomissione: {{submission}}</span>
-    </p>
-    <p>
-      <span style="font-size:18px;">In attesa di assegnazione del protocollo...</span>
-    </p>
+  <div class="container py-3">
+    <div class="jumbotron">
+      <div class="container">
+        <h1 class="display-4">La segnalazione è stata inviata con successo.</h1>
+        <p>ID della sottomissione: {{submission}}</p>
+        <p>In attesa di assegnazione del protocollo...</p>
+      </div>
+    </div>
   </div>
 </ng-template>
