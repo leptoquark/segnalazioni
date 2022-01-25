@@ -24,6 +24,10 @@ export class EndComponent  implements OnInit {
 
    if (this.sub.getId())
     {
+
+      // rimuovo il salvataggio dalla local storage
+      localStorage.clear();
+
       this.jwtToken = (await this.repository.authenticate()).token;
 
       // Inserire la logica di sottomissione asincrona
