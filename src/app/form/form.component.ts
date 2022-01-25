@@ -92,6 +92,20 @@ export class FormComponent implements OnInit {
 
   async formLoad(event: any): Promise<void> {
 
+    let datisalvati = localStorage.getItem("draft");
+    if (datisalvati==null)
+      datisalvati='';
+    event.data = JSON.parse(datisalvati);
+
+    console.log("dopo: "+JSON.stringify(event.data));
+
+    this.refreshForm.emit({
+      form: this.myform,
+      submission: {
+        data: event.data
+      }
+    });
+
     this.health = (await this.repository.health());
 
     if (this.health.status === "KO")
@@ -99,13 +113,7 @@ export class FormComponent implements OnInit {
 
     this.jwtToken = (await this.repository.authenticate()).token;
 
-    event.data.cig_trovato=1;
-    this.refreshForm.emit({
-      form: this.myform,
-      submission: {
-        data: event.data
-      }
-    });
+    //event.data.cig_trovato=1;
   }
   
   onTop(): void {
@@ -115,22 +123,6 @@ export class FormComponent implements OnInit {
   invalid(event: any)
   {
     console.log("invalido");
-  }
-
-  render(event: any) {
-
-    let submissionDraft = "";
-    let dataAux = localStorage.getItem("draft");
-    if (dataAux != null)
-      submissionDraft = JSON.parse(dataAux);
-
-    this.refreshForm.emit({
-      form: this.myform,
-      submission: {
-        data: submissionDraft
-      }
-    });
-   
   }
 
   private titleCaseWord(word: string) {
@@ -144,7 +136,8 @@ export class FormComponent implements OnInit {
 
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
-      localStorage.setItem("draft",JSON.stringify(event.data));
+      localStorage.setItem("draft",JSON.stringify(submissionAux));
+      console.log("salvataggio: "+localStorage.getItem("draft"));
     }
 
     if (event.type === 'cancella_cig'){

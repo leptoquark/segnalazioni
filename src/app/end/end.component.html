@@ -1,13 +1,10 @@
  <div *ngIf="prot()!==''; else other_content" class="container py-3">
-      <p>
-        <span style="font-size:18px;">La segnalazione è stata sottomessa con successo</span>
-      </p>
-      <p>
-        <span style="font-size:18px;">A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione</span>
-      </p>
-
-      <div>
-        <h3 class="display-6">Protocollo: {{prot()}}</h3>
+      <div class="jumbotron">
+        <div class="container">
+          <h1 class="display-4">La segnalazione è stata inviata con successo.</h1>
+          <p>A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione</p>
+          <p>Protocollo: {{prot()}}</p>
+        </div>
       </div>
 
       <div id="content">
