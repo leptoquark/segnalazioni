@@ -12,12 +12,14 @@ import { AppComponent } from './app.component';
 import { EndComponent } from './end/end.component';
 import { FormComponent } from './form/form.component';
 import { ModelModule } from './model/model.module';
+import { RemoveAfterDirective } from './remove-after.directive';
 
 @NgModule({
   declarations: [
     AppComponent,
     FormComponent,
-    EndComponent
+    EndComponent,
+    RemoveAfterDirective
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { SegnalazioniRepository } from '../model/segnalazioni.repository';
 import { Submission } from '../model/submission.model';
@@ -30,6 +30,8 @@ export class FormComponent implements OnInit {
 
   src: string = EnvConfig.appUrl+"/"+EnvConfig.formId;
   health: Health = new Health;
+  saving: string = 'KO';
+  data_salvataggio: string = "";
  
   renderOptions: Object = {
     buttonSettings: {
@@ -93,11 +95,19 @@ export class FormComponent implements OnInit {
   async formLoad(event: any): Promise<void> {
 
     let datisalvati = localStorage.getItem("draft");
+
+    if (datisalvati)
+    {
+      this.saving = 'OK';
+      let data_aux = localStorage.getItem("data_salvataggio");
+      if (data_aux)
+        this.data_salvataggio = data_aux;
+    }
+
     if (datisalvati==null)
       datisalvati='';
-    event.data = JSON.parse(datisalvati);
 
-    console.log("dopo: "+JSON.stringify(event.data));
+    event.data = JSON.parse(datisalvati);
 
     this.refreshForm.emit({
       form: this.myform,
@@ -137,7 +147,17 @@ export class FormComponent implements OnInit {
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
     if (event.type === 'salvabozza'){
       localStorage.setItem("draft",JSON.stringify(submissionAux));
-      console.log("salvataggio: "+localStorage.getItem("draft"));
+
+      var data = new Date();
+      var gg, mm, aaaa, hh, min;
+      gg = data.getDate() + "/";
+      mm = data.getMonth() + 1 + "/";
+      aaaa = data.getFullYear();
+      hh = data.getHours();
+      min = data.getMinutes();
+
+      
+      localStorage.setItem("data_salvataggio", gg + mm + aaaa+ " ora "+hh+"."+min);
     }
 
     if (event.type === 'cancella_cig'){

@@ -1,9 +1,9 @@
  <div *ngIf="prot()!==''; else other_content" class="container py-3">
       <div class="jumbotron">
         <div class="container">
-          <h1 class="display-4">La segnalazione è stata inviata con successo.</h1>
-          <p>A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione</p>
-          <p>Protocollo: {{prot()}}</p>
+          <h2 class="display-4">La segnalazione è stata inviata con successo.</h2>
+          <h2 class="display-4">A breve riceverà alla mail indicata per il contatto, una copia pdf della sottomissione.</h2>
+          <h4>Protocollo: {{prot()}}</h4>
         </div>
       </div>
 
@@ -20,7 +20,7 @@
   <div class="container py-3">
     <div class="jumbotron">
       <div class="container">
-        <h1 class="display-4">La segnalazione è stata inviata con successo.</h1>
+        <h2 class="display-4">La segnalazione è stata inviata con successo.</h2>
         <p>ID della sottomissione: {{submission}}</p>
         <p>In attesa di assegnazione del protocollo...</p>
       </div>

@@ -3,6 +3,10 @@
       Servizi per l'autocompletamento non disponibili: {{healthStatus.message}}</div>
 </div>
 
+<div appRemoveAfter="4000" *ngIf="saving==='OK'" class="alert alert-info">
+    Recupero dei dati dal salvataggio del giorno {{data_salvataggio}}
+</div>
+
  <div>
     <formio [src]="src"
       [renderOptions]="renderOptions"
