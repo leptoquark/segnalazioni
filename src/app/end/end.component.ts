@@ -49,7 +49,7 @@ export class EndComponent  implements OnInit {
           flatten: true,
         }).then(function(instance) {
             formio.loadSubmission().then(function(submission: any) {
-              
+
             instance.submission = submission;
 
             instance.getComponent('submit').component.hidden = true;
@@ -58,12 +58,12 @@ export class EndComponent  implements OnInit {
             instance.getComponent('bottoni_ricerca_cig').component.hidden = true;
             instance.getComponent('valida_cig').component.hidden = true;
 
-            instance.getComponent('moduloSalvainbozza').component.hidden = true;
-            instance.getComponent('appaltiStartSalvainbozza').component.hidden = true;
-            instance.getComponent('anticorruzioneStartSalvainbozza').component.hidden = true;
-            instance.getComponent('incarichiStartSalvainbozza').component.hidden = true;
-            instance.getComponent('trasparenzaStartSalvainbozza').component.hidden = true;
-            instance.getComponent('chiusuraSalvainbozza').component.hidden = true;
+            instance.getComponent('salva_in_bozza_1').component.hidden = true;
+            instance.getComponent('salva_in_bozza_2').component.hidden = true;
+            instance.getComponent('salva_in_bozza_3').component.hidden = true;
+            instance.getComponent('salva_in_bozza_4').component.hidden = true;
+            instance.getComponent('salva_in_bozza_5').component.hidden = true;
+            instance.getComponent('salva_in_bozza_6').component.hidden = true;
 
           });
         })

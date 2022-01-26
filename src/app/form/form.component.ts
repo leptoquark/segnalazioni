@@ -145,19 +145,17 @@ export class FormComponent implements OnInit {
     let submissionAux = event.data;
 
     /* azione per il salvataggio in bozza, nella localstorage, della sottomissione */
-    if (event.type === 'salvabozza'){
+    if (event.type === 'salvabozza') {
+
+      localStorage.clear();
       localStorage.setItem("draft",JSON.stringify(submissionAux));
 
-      var data = new Date();
-      var gg, mm, aaaa, hh, min;
-      gg = data.getDate() + "/";
-      mm = data.getMonth() + 1 + "/";
-      aaaa = data.getFullYear();
-      hh = data.getHours();
-      min = data.getMinutes();
-
+      let date = new Date();
+      let data_format = String(date.getDate()).padStart(2, '0') + '/' + String(date.getMonth() + 1).padStart(2, '0') + '/' + date.getFullYear();
+      let hh = String(date.getHours()).padStart(2, '0');
+      let mm = String(date.getMinutes()).padStart(2, '0');
       
-      localStorage.setItem("data_salvataggio", gg + mm + aaaa+ " ora "+hh+"."+min);
+      localStorage.setItem("data_salvataggio",data_format+" "+hh+":"+mm);
     }
 
     if (event.type === 'cancella_cig'){

@@ -1,4 +1,6 @@
 import { Directive, ElementRef, Input } from '@angular/core';
+import { from } from 'rxjs';
+import { FormComponent } from './form/form.component';
 
 @Directive({
   selector: '[appRemoveAfter]'
